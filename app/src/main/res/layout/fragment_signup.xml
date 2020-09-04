@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/btnBack"
+
+            android:contentDescription="back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|center">
+
+            <ImageView
+
+                android:contentDescription="back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_back" />
+
+            <TextView
+
+                android:contentDescription="back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Back"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8" />
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Sign up"
+            android:textColor="#FF9564"
+            android:textSize="30sp"
+            app:typeface="@string/font_bold" />
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="your account"
+            android:textColor="#FF9564"
+            android:textSize="30sp"
+            app:typeface="@string/font_bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3" />
+
+        <com.tekrevol.mantra.widget.AnyEditTextView
+            android:id="@+id/txt_username"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:contentDescription="username"
+            android:fontFamily="@string/font_medium"
+            android:hint="Full Name"
+            android:singleLine="true"
+            android:textColor="#7B7B7B"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+
+
+        <com.tekrevol.mantra.widget.AnyEditTextView
+            android:id="@+id/txt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:contentDescription="email password"
+            android:fontFamily="@string/font_medium"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="#7B7B7B"
+            android:textSize="18sp"
+            app:testType="email" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+
+        <com.tekrevol.mantra.widget.AnyEditTextView
+            android:id="@+id/txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:layout_marginTop="10dp"
+            android:contentDescription="password"
+            android:fontFamily="@string/font_medium"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="#7B7B7B"
+            android:textSize="18sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+
+
+        <com.tekrevol.mantra.widget.AnyEditTextView
+            android:id="@+id/txt_confirm_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:layout_marginTop="10dp"
+            android:contentDescription="confirm password"
+            android:fontFamily="@string/font_medium"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="#7B7B7B"
+            android:textSize="18sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <CheckBox
+                android:id="@+id/checked"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/x5dp" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I have read and I accept the"
+                android:textColor="@color/txtBlack"
+                android:textSize="@dimen/s14"
+                app:typeface="@string/font_medium"
+                />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:padding="@dimen/x5dp"
+                android:layout_height="wrap_content"
+                android:text="@string/terms"
+                android:id="@+id/contTermsAndConditions"
+                android:textColor="@color/txtBlack"
+                android:textSize="@dimen/s14"
+                app:typeface="@string/font_bold"
+                />
+
+        </LinearLayout>
+
+
+
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:id="@+id/btn_signup"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/bg_button"
+            android:background="@drawable/rectangle_pink"
+            android:contentDescription="Sign up"
+            android:gravity="center"
+            android:text="Sign up"
+            android:textAllCaps="false"
+            android:textColor="@color/c_white"
+            android:textSize="18sp"
+            app:typeface="@string/font_medium" />
+
+        <ImageButton
+            android:id="@+id/btn_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/btn_fb"
+            android:bottomLeftRadius="10dp"
+            android:bottomRightRadius="10dp"
+            android:contentDescription="Login with facebook"
+            android:textAllCaps="false"
+            android:textColor="#FF9564"
+            android:topLeftRadius="10dp"
+            android:topRightRadius="10dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account?"
+                android:textColor="#7B7B7B"
+                app:typeface="@string/font_regular" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:id="@+id/txtLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="login"
+                android:text="@string/Login"
+                android:textColor="#FF9564"
+                app:typeface="@string/font_regular" />
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

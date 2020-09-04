@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FBE9D8"
+        android:padding="@dimen/x20dp">
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This is dummy copy. It is not meant to be read. It
+has been placed here solely to demonstrate the
+look and feel of finished, typeset text.\n\n
+
+This is dummy copy. It is not meant to be read. It
+has been placed here solely to demonstrate the
+look and feel of finished, typeset text.\n\n
+
+This is dummy copy. It is not meant to be read. It
+has been placed here solely to demonstrate the
+look and feel of finished, typeset text.
+
+This is dummy copy. It is not meant to be read. It
+has been placed here solely to demonstrate the
+look and feel of finished, typeset text.
+
+This is dummy copy. It is not meant to be read. It
+has been placed here solely to demonstrate the
+look and feel of finished, typeset text. This is
+dummy copy. It is not meant to be read. It has
+been placed here solely to demonstrate the look
+and feel of finished, typeset text." />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

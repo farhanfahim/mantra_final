@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mantrabg">
+
+    <!--    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mantra Title"
+                android:textSize="18sp"
+                app:typeface="@string/font_regular" />
+
+            <com.tekrevol.mantra.widget.AnyEditTextView
+                android:id="@+id/mantratitle"
+                android:background="@null"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:minLines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/c_black"
+                android:textSize="20sp"
+                app:typeface="@string/font_regular" />
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/x10dp"
+                android:layout_marginRight="@dimen/x20dp"
+                android:background="@color/txtDarkGrey" />
+
+            <LinearLayout
+                android:id="@+id/mmediacategory"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/x10dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/txtmmediacategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Select Category..."
+                    android:padding="5dp"
+                    android:textColor="@color/c_black"
+                    android:textColorHint="@color/c_black"
+                    android:textSize="12sp"
+                    app:typeface="@string/font_regular" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/mantracategory"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/x10dp"
+                android:background="@drawable/rectangle"
+                android:gravity="center">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/txtmantracategory"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Select Category..."
+                    android:padding="5dp"
+                    android:textColor="@color/c_black"
+                    android:textColorHint="@color/c_black"
+                    android:textSize="12sp"
+                    app:typeface="@string/font_regular" />
+
+                <ImageView
+                    android:id="@+id/imgspinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Select category"
+                    android:padding="@dimen/x10dp"
+                    android:src="@drawable/chevron" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/x10dp"
+                android:layout_marginRight="@dimen/x20dp"
+                android:background="@color/txtDarkGrey" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x10dp"
+                android:text="Description"
+                android:textSize="18sp"
+                app:typeface="@string/font_regular" />
+
+            <com.tekrevol.mantra.widget.AnyEditTextView
+                android:id="@+id/txtnote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:minLines="1"
+                android:maxLines="5"
+                android:singleLine="true"
+                android:hint="add note here..."
+                android:textColor="@color/c_black"
+                android:textColorHint="@color/c_black"
+                android:textSize="20sp"
+                app:typeface="@string/font_regular" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/x10dp"
+                android:layout_marginRight="@dimen/x20dp"
+                android:background="@color/txtDarkGrey" />
+
+            <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/scheduleMantraLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center|start">
+
+                <CheckBox
+                    android:id="@+id/cbScheduledMantra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/CheckboxStyle"
+                    />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:text="Do you want to schedule mantra?"
+                    android:textColor="@color/c_black"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutscheduled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reminder Title"
+                    android:textSize="18sp"
+                    app:typeface="@string/font_regular" />
+
+                <com.tekrevol.mantra.widget.AnyEditTextView
+                    android:id="@+id/txtremindertitle"
+                    android:background="@null"
+                    android:minLines="1"
+                    android:maxLines="1"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="add title..."
+                    android:textColor="@color/c_black"
+                    android:textColorHint="@color/c_black"
+                    android:textSize="20sp"
+                    app:typeface="@string/font_regular" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="@dimen/x10dp"
+                    android:layout_marginRight="@dimen/x20dp"
+                    android:background="@color/txtDarkGrey" />
+
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x15dp"
+                    android:text="Date &amp; Time"
+                    android:textSize="18sp"
+                    app:typeface="@string/font_regular" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.tekrevol.mantra.widget.AnyTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center|start"
+                        android:text="Pick date and time"
+                        android:textColor="@color/c_black"
+                        android:textSize="18sp"
+                        app:typeface="@string/font_regular" />
+
+
+                    <ImageView
+                        android:id="@+id/addDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/x5dp"
+                        android:background="@drawable/circle_orange"
+                        android:padding="@dimen/x5dp"
+                        android:src="@drawable/fab_add"
+                        android:textColor="@color/c_white"
+                        android:textSize="18sp" />
+
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/daterecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                tools:itemCount="3"
+                android:visibility="gone"
+                tools:listitem="@layout/custom_date"/>
+
+            <LinearLayout
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x60dp"
+                android:backgroundTint="@color/bg_button"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/rectangle_pink">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/btn_login"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:contentDescription="save"
+                    android:gravity="center"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/c_white"
+                    android:textSize="18sp" />
+
+              <!--  <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:contentDescription="save"
+
+                    android:padding="@dimen/x10dp"
+                    android:src="@drawable/forward" />
+-->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/title_bar_gradient">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/x10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/x10dp"
+                android:layout_marginRight="10dp"
+                android:background="#FCD9BF"
+                app:corner_radius="@dimen/x10dp">
+
+
+                <!--i’m king of the world-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.tekrevol.mantra.widget.AnyEditTextView
+                        android:id="@+id/txtsearch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/x10dp"
+                        android:drawablePadding="@dimen/x5dp"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_search"
+                        android:drawableTint="@color/txtGrey"
+                        android:background="@null"
+                        android:contentDescription="search text"
+                        android:fontFamily="@string/font_regular"
+                        android:gravity="center|start"
+                        android:hint="Search here"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="@color/txtBlack"
+                        android:textColorHint="@color/txtGrey"
+                        android:textSize="15sp" />
+
+
+                    <ImageView
+                        android:id="@+id/btnclear"
+                        android:layout_width="@dimen/x30dp"
+                        android:layout_height="@dimen/x30dp"
+                        android:padding="@dimen/x3dp"
+                        android:src="@drawable/ic_close_black_24dp"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/material_grey600"/>
+
+
+                </LinearLayout>
+
+
+            </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+
+
+            <!--    <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/txtGrey"
+                    app:typeface="@string/font_regular" />-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recyclerview_childrenlaugh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    tools:listitem="@layout/customlist_listsearch">
+
+                </com.todkars.shimmer.ShimmerRecyclerView>
+
+            </LinearLayout>
+
+            <ProgressBar
+
+                android:id="@+id/progressBar_activitymain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
+                android:indeterminate="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

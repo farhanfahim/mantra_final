@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/title_bar_gradient"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/x10dp">
+
+
+        <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+            android:id="@+id/contSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/x10dp"
+            android:layout_marginRight="10dp"
+            android:background="#FCD9BF"
+            app:corner_radius="@dimen/x10dp">
+
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:id="@+id/txtsearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/x10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:contentDescription="search text"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawableTint="@color/txtGrey"
+                android:fontFamily="@string/font_regular"
+                android:gravity="center|start"
+                android:hint="Search here"
+                android:padding="8dp"
+                android:drawablePadding="@dimen/x5dp"
+                android:singleLine="true"
+                android:textColor="@color/txtBlack"
+                android:textColorHint="@color/txtGrey"
+                android:textSize="15sp" />
+
+
+        </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.todkars.shimmer.ShimmerRecyclerView
+                android:id="@+id/recyclerview_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/customlist_categories">
+
+            </com.todkars.shimmer.ShimmerRecyclerView>
+
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar_activitymain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"
+            android:indeterminate="true"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FBE9D8">\
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2">
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsatorx"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:pulse_color="#FBE1CB"
+                app:pulse_count="4"
+                app:pulse_duration="1000"
+                app:pulse_interpolator="Accelerate"
+                app:pulse_repeat="0"
+                app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsatory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:pulse_color="#FCC9A6"
+                app:pulse_count="3"
+                app:pulse_duration="2000"
+                app:pulse_interpolator="Linear"
+                app:pulse_repeat="0"
+                app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsatorz"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:pulse_color="#FFA07A"
+                app:pulse_count="4"
+                app:pulse_duration="1000"
+                app:pulse_interpolator="Linear"
+                app:pulse_repeat="0"
+                app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="260dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/rec" />
+
+            <ImageView
+                android:id="@+id/recorderAnimationImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/recpulse"
+                android:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@android:color/white"
+                android:textSize="40sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/x15dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/playBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="play"
+                android:src="@drawable/btn_stop"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/playdisabvleBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="disable play"
+                android:src="@drawable/icon_play_disable" />
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_weight="1">
+
+                <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                    android:id="@+id/pulsator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    app:pulse_color="#FFA07A"
+                    app:pulse_count="4"
+                    app:pulse_duration="2000"
+                    app:pulse_interpolator="Accelerate"
+                    app:pulse_repeat="0"
+                    app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+
+                <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                    android:id="@+id/pulsator1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    app:pulse_color="#FFA07A"
+                    app:pulse_count="3"
+                    app:pulse_duration="3000"
+                    app:pulse_interpolator="Linear"
+                    app:pulse_repeat="0"
+                    app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+                <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                    android:id="@+id/pulsator2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    app:pulse_color="#FFA07A"
+                    app:pulse_count="4"
+                    app:pulse_duration="2000"
+                    app:pulse_interpolator="Linear"
+                    app:pulse_repeat="0"
+                    app:pulse_startFromScratch="false"></pl.bclogic.pulsator4droid.library.PulsatorLayout>
+
+                <ImageView
+                    android:id="@+id/record"
+
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="record"
+                    android:src="@drawable/play2" />
+
+                <ImageView
+                    android:id="@+id/pause"
+
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:contentDescription="stop recording"
+                    android:src="@drawable/btn_recorder_pause"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
+            <ImageView
+
+                android:id="@+id/img_continue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="save"
+                android:src="@drawable/icon_next_disable" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/x15dp">
+
+            <ImageButton
+                android:id="@+id/uncheckbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_uncheck"
+                android:contentDescription="remember me" />
+
+            <ImageButton
+                android:id="@+id/checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_checkbox"
+                android:visibility="gone" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:text="Private"
+                android:textColor="@color/c_black" />
+        </LinearLayout>
+
+        <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/x10dp"
+            android:background="@color/bg_button"
+            app:corner_radius="@dimen/x10dp">
+
+
+            <com.tekrevol.mantra.widget.AnyEditTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:contentDescription="mantra title"
+                android:hint="Mantra Title :"
+                android:lines="1"
+                android:maxLines="1"
+                android:padding="@dimen/x10dp"
+                android:singleLine="true"
+                android:textColor="@color/c_white"
+                android:textColorHint="@color/c_white"
+                app:typeface="@string/font_regular" />
+
+        </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contParentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg">
+
+    <!--  <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:scaleType=""
+          android:contentDescription="Splash"
+          android:src="@drawable/splash" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start|center">
+
+            <ImageView
+                android:contentDescription="back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_back" />
+
+            <TextView
+                android:contentDescription="back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Back"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8" />
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            app:typeface="@string/font_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Login into"
+            android:textColor="#FF9564"
+            android:textSize="30sp"
+             />
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="your account"
+            android:textColor="#FF9564"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:typeface="@string/font_bold" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3" />
+
+        <com.tekrevol.mantra.widget.AnyEditTextView
+            android:id="@+id/txt_username"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@null"
+            android:contentDescription="email"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="#7B7B7B"
+            android:textSize="18sp"
+            app:fontFamily="@string/font_medium" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.tekrevol.mantra.widget.AnyEditTextView
+                android:id="@+id/txt_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:singleLine="true"
+                android:fontFamily="@string/font_medium"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:contentDescription="password"
+                android:textColor="#7B7B7B"
+                android:textSize="18sp" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:id="@+id/txt_forgot"
+                android:contentDescription="forgot password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="end"
+                android:text="Forgot?"
+                android:textColor="@color/txtBlack"
+                app:typeface="@string/font_medium" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/text_color_grey_mid_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <CheckBox
+                android:id="@+id/checked"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/x5dp" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I have read and I accept the"
+                android:textColor="@color/txtBlack"
+                android:textSize="@dimen/s14"
+                app:typeface="@string/font_medium"
+                />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:padding="@dimen/x5dp"
+                android:layout_height="wrap_content"
+                android:text="@string/terms"
+                android:id="@+id/contTermsAndConditions"
+                android:textColor="@color/txtBlack"
+                android:textSize="@dimen/s14"
+                app:typeface="@string/font_bold"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
+
+            <ImageButton
+
+                android:contentDescription="remember me"
+                android:id="@+id/uncheckbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_uncheck" />
+            <ImageButton
+
+                android:visibility="gone"
+                android:id="@+id/checkbox"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_checkbox" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:text="Remember me"
+                android:textColor="#7B7B7B" />
+        </LinearLayout>
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:backgroundTint="@color/bg_button"
+            android:background="@drawable/rectangle_pink"
+            android:contentDescription="Login"
+            android:gravity="center"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textColor="@color/c_white"
+            android:textSize="18sp"
+            app:typeface="@string/font_medium" />
+
+        <ImageButton
+            android:id="@+id/btn_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/loginfb2"
+            android:contentDescription="Login with facebook"
+            android:textAllCaps="false"
+            android:textColor="#FF9564" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account?"
+                android:textColor="#7B7B7B"
+                app:typeface="@string/font_regular" />
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:id="@+id/txt_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:contentDescription="Sign up"
+                android:text="@string/SIgn_Up"
+                android:textColor="#FF9564"
+                app:typeface="@string/font_regular" />
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/x3dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+
+    <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#9fff"
+        android:gravity="center"
+        android:padding="@dimen/x8dp"
+        app:corner_radius="@dimen/x8dp">
+
+        <com.tekrevol.mantra.widget.AnyTextView
+            android:id="@+id/txtdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:textColor="@color/txtBlack"
+            android:textSize="@dimen/s14"
+            android:text="- - - - -" />
+
+
+        <ImageView
+            android:id="@+id/txtcancel"
+            android:layout_width="@dimen/x25dp"
+            android:layout_height="@dimen/x25dp"
+            android:padding="@dimen/x3dp"
+            android:src="@drawable/icon_close" />
+
+    </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mantrabg">
+
+    <!--    <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We would love to get your feedback from you on our app.
+The more details you can provide, the better would be"
+                android:textColor="@color/txtDarkGrey"
+                android:textSize="@dimen/s14" />
+
+            <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x20dp"
+                android:background="@color/c_white"
+                android:orientation="vertical"
+                app:corner_radius="@dimen/x7dp">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x10dp"
+                    android:textColor="@color/txtBlack"
+                    android:text="Has Mantra App met your expectations?"
+                    android:textSize="@dimen/s18" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x2dp"
+                    android:background="@color/seperator_light_gray" />
+
+                <RadioGroup
+                    android:id="@+id/btnRadio"
+                    android:padding="@dimen/x5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/txtDarkGrey"
+                        android:text="Exceeded Expectations" />
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:textColor="@color/txtDarkGrey"
+                        android:layout_height="wrap_content"
+                        android:text="Met Expectations" />
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:textColor="@color/txtDarkGrey"
+                        android:layout_height="wrap_content"
+                        android:text="Below Expectations" />
+                    <RadioButton
+                        android:layout_width="match_parent"
+                        android:textColor="@color/txtDarkGrey"
+                        android:layout_height="wrap_content"
+                        android:text="None of the Above" />
+
+                </RadioGroup>
+            </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+            <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x20dp"
+                android:layout_marginBottom="@dimen/x20dp"
+                android:background="@color/c_white"
+                android:orientation="vertical"
+                app:corner_radius="@dimen/x7dp">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x10dp"
+                    android:textColor="@color/txtBlack"
+                    android:text="How could we improve your experience?"
+                    android:textSize="@dimen/s18" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x2dp"
+                    android:background="@color/seperator_light_gray" />
+
+
+                    <com.tekrevol.mantra.widget.AnyEditTextView
+                        android:padding="@dimen/x10dp"
+                        android:id="@+id/edtComment"
+                        android:background="@null"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:hint="Please share your detailed feedback"
+                        android:inputType="textMultiLine"
+                        android:lines="5"
+                        android:maxLength="500"
+                        android:maxLines="5"
+                        android:textColor="@color/txtDarkGrey"
+                        android:textColorHint="@color/txtGrey"
+                        android:textSize="@dimen/s15"
+                        app:typeface="@string/font_regular" />
+
+            </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+            <LinearLayout
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x60dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/rectangle_pink"
+                android:backgroundTint="@color/bg_button">
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
+                    android:contentDescription="save"
+                    android:gravity="center"
+                    android:text="Submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/c_white"
+                    android:textSize="18sp" />
+
+                <!--  <ImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:contentDescription="save"
+
+                      android:padding="@dimen/x10dp"
+                      android:src="@drawable/forward" />
+  -->
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

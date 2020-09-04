@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/title_bar_gradient">
+
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/categories_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginLeft="10dp"
+                android:textSize="0sp"/>
+
+
+            <LinearLayout
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recyclerview_movie_lines"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/customlist_movielines">
+
+                </com.todkars.shimmer.ShimmerRecyclerView>
+
+
+            </LinearLayout>
+
+            <ProgressBar
+
+                android:id="@+id/progressBar_activitymain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
+                android:indeterminate="true"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:visibility="gone" />
+
+</LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none">
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="1"
+            android:background="#F06F3C"
+            android:scaleType="centerCrop"
+            android:visibility="visible" />
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end">
+
+                    <ImageButton
+                        android:id="@+id/btnBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
+                        android:background="@drawable/btn_nav"
+                        android:padding="5dp" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image"
+                        android:layout_width="@dimen/x140dp"
+                        android:layout_height="@dimen/x140dp"
+                        android:layout_centerInParent="true" />
+
+                </RelativeLayout>
+
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/txt_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s20"
+                    app:typeface="@string/font_bold" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/txt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/c_white"
+                    android:textSize="14sp"
+                    app:fontFamily="@string/font_bold"
+                    app:typeface="@string/font_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Profile"
+                    android:gravity="center"
+                    android:text="Profile"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="About us"
+                    android:gravity="center"
+                    android:text="About us"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Privacy policy"
+                    android:gravity="center"
+                    android:text="Privacy Policy"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/changepass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Privacy policy"
+                    android:gravity="center"
+                    android:text="Change Password"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Feedback"
+                    android:gravity="center"
+                    android:text="Feedback"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Logout"
+                    android:gravity="center"
+                    android:text="Logout"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+
+                <ImageButton
+                    android:id="@+id/cancel"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/cancel_nav"
+                    android:contentDescription="cancel"
+                    android:gravity="center" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.5" />
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

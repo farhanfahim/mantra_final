@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mantrabg"
+    android:gravity="center"
+    android:padding="@dimen/x20dp"
+    android:orientation="vertical">
+
+
+
+
+
+    <com.tekrevol.mantra.widget.AnyTextView
+        android:id="@+id/txtMantraTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/x10dp"
+        android:text="Mantra"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:textColor="@color/txtBlack"
+        android:textSize="@dimen/s22"
+        app:typeface="@string/font_bold" />
+
+
+    <com.tekrevol.mantra.widget.AnyTextView
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="5"
+        android:text=""
+        android:padding="@dimen/x10dp"
+        android:textSize="18sp"
+        app:typeface="@string/font_regular" />
+
+
+    <com.tekrevol.mantra.widget.AnyTextView
+        android:id="@+id/txtReminderNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text=""
+        android:padding="@dimen/x10dp"
+        android:textSize="18sp"
+        app:typeface="@string/font_regular" />
+
+
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="save"
+        android:src="@drawable/img_alarm_clock" />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:padding="@dimen/x10dp"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/imgReject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="save"
+            android:src="@drawable/img_cancel_alarm" />
+
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgAccept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:contentDescription="save"
+            android:src="@drawable/img_accept_alarm" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

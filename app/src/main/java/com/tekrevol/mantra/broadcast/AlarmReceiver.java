@@ -1,0 +1,195 @@
+package com.tekrevol.mantra.broadcast;
+
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+
+import com.tekrevol.mantra.BaseApplication;
+import com.tekrevol.mantra.R;
+import com.tekrevol.mantra.activities.AlarmActivity;
+import com.tekrevol.mantra.activities.MainActivity;
+import com.tekrevol.mantra.constatnts.AppConstants;
+import com.tekrevol.mantra.enums.DBModelTypes;
+import com.tekrevol.mantra.managers.ObjectBoxManager;
+import com.tekrevol.mantra.managers.SharedPreferenceManager;
+import com.tekrevol.mantra.models.database.AlarmModel;
+import com.tekrevol.mantra.models.receiving_model.MediaModel;
+
+public class AlarmReceiver extends BroadcastReceiver {
+    private ObjectBoxManager objectBoxManager;
+    Context ctx;
+    long generalDBID = -1;
+    int alarmId = -1;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d("ALARM", "onReceive: " + "alarm detected");
+
+
+        objectBoxManager = ObjectBoxManager.getInstance((BaseApplication) context.getApplicationContext());
+        ctx = context;
+
+        if (SharedPreferenceManager.getInstance(ctx).getCurrentUser() == null) {
+            return;
+        }
+
+        if (intent.getLongExtra(AppConstants.GENERAL_DB_ID, -1) == -1) {
+            Log.d("ALARM", "onReceive: " + "General DB invalid ID");
+            return;
+        }
+
+
+
+        generalDBID = intent.getLongExtra(AppConstants.GENERAL_DB_ID, -1);
+        alarmId = intent.getIntExtra(AppConstants.ALARM_ID, -1);
+
+
+
+        Log.d("ALARM", "onReceive: " + "General DB ID: " + generalDBID);
+        Log.d("ALARM", "onReceive: " + "Alarm DB ID: " + alarmId);
+
+        MediaModel scheduledMantraMediaModel = objectBoxManager.getScheduledMantraMediaModel(generalDBID);
+//        showNotification(alarmId, scheduledMantraMediaModel);
+
+        dismissAlarm(alarmId, ctx);
+        Log.d("ALARM", "onReceive: " + "alarm succes");
+
+        try {
+            AlarmModel alarmModel = null;
+
+//            if (scheduledMantraMediaModel.getAlarms().size() == 1) {
+//                objectBoxManager.removeGeneralDBModel(generalDBID);
+//            } else {
+            for (AlarmModel alarm : scheduledMantraMediaModel.getAlarms()) {
+                if (alarm.getAlarmId() == alarmId) {
+                    alarmModel = alarm;
+                }
+            }
+
+            if (alarmModel != null) {
+                scheduledMantraMediaModel.getAlarms().remove(alarmModel);
+                objectBoxManager.putGeneralDBModel(generalDBID, scheduledMantraMediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+
+            }else{
+                Intent serviceIntent = new Intent(ctx, ExampleService.class);
+                ctx.stopService(serviceIntent);
+            }
+//            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        openActivity(AlarmActivity.class, generalDBID);
+
+    }
+
+
+    /**
+     * Custom method to cancel the set alarm when the work is done for that specific alarm.
+     *
+     * @param alarmId long unique id of the specific alarm.
+     * @param context Context object.
+     */
+    private void dismissAlarm(long alarmId, Context context) {
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent newIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int) alarmId, newIntent, 0);
+
+        alarmMgr.cancel(alarmIntent);
+    }
+
+
+    /**
+     * Create and show a simple notification containing using MediaModel model.
+     *
+     */
+    private void sendNotification(int alarmId,  MediaModel mediaModel) {
+
+        Intent intent;
+        intent = new Intent(ctx, MainActivity.class);
+//        intent.putExtra(constants.K_LOG_ID, logsRowId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, (int)alarmId /* Request code */, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx)
+                .setSmallIcon(R.drawable.img_mantra_status_logo)
+                .setContentTitle(mediaModel.getName())
+                .setContentText(mediaModel.getDescription())
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(mediaModel.getName()))
+                .setContentIntent(pendingIntent);
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (notificationManager != null) {
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        }
+    }
+
+
+
+    public void showNotification(int alarmId,  MediaModel mediaModel) {
+        Intent intent;
+        intent = new Intent(ctx, MainActivity.class);
+//        intent.putExtra(constants.K_LOG_ID, logsRowId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(ctx,
+                alarmId,
+                intent, PendingIntent.FLAG_ONE_SHOT);
+        String CHANNEL_ID = "papp_channel";// The id of the channel.
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
+                .setSmallIcon(R.drawable.img_mantra_status_logo)
+                .setContentTitle(mediaModel.getName())
+                .setContentText(mediaModel.getDescription())
+                .setAutoCancel(true)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent);
+        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = ctx.getString(R.string.app_name);// The user-visible name of the channel.
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+        notificationManager.notify(alarmId, notificationBuilder.build());
+
+        Log.d("showNotification", "showNotification: " + alarmId);
+    }
+
+    public void openActivity(Class<?> tClass, long id) {
+        Intent i = new Intent(ctx, tClass);
+        i.putExtra(AppConstants.GENERAL_DB_ID, id);
+        Log.d("ALARM INTENT", "openActivity: " + id);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ctx.startActivity(i);
+
+    }
+
+
+
+
+}

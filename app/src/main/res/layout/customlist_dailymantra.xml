@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/x260dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:padding="10dp"
+    android:layout_height="@dimen/x180dp">
+
+    <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+        android:id="@+id/cont_play1"
+        android:layout_width="match_parent"
+        android:background="#FFFFFF"
+        app:corner_radius="@dimen/x10dp"
+        android:layout_height="@dimen/x160dp">
+
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="115dp">
+
+            <RelativeLayout
+                android:id="@+id/cont_play"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <ImageView
+                    android:id="@+id/img_mantra"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/test" />
+
+                <ImageButton
+                    android:visibility="gone"
+                    android:id="@+id/daily_mantra_playbtn"
+                    android:layout_width="40dp"
+                    android:scaleType="fitXY"
+                    android:background="@null"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icon_play_color"/>
+
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="#FFFFFF"
+            android:layout_marginTop="-7dp"
+            android:id="@+id/layout2"
+
+            android:focusable="true"
+            android:layout_below="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.tekrevol.mantra.widget.AnyTextView
+                app:typeface="@string/font_medium"
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textSize="15sp"
+                android:singleLine="true"
+                android:minLines="1"
+                android:ellipsize="end"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="0dp"
+                android:gravity="center"
+                android:textColor="@color/txtBlack"
+                android:text="Be a warrior, not a worrier."/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginBottom="5dp"
+            android:id="@+id/layout3"
+            android:layout_below="@+id/layout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+
+                android:focusable="true"
+                android:layout_marginTop="@dimen/x2dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+                    android:layout_width="23dp"
+                    android:layout_height="20dp"
+                    android:background="#5797E9"
+                    android:gravity="center"
+
+                    android:layout_gravity="start|center"
+                    android:layout_toEndOf="@id/layout3"
+                    android:layout_toRightOf="@id/layout3"
+                    android:id="@+id/iconbgcolor"
+                    app:corner_radius="@dimen/x3dp">
+
+
+                    <ImageView
+
+
+                        android:gravity="center"
+                        android:src="@drawable/img_depression"
+                        android:id="@+id/img_icon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                    />
+
+                </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+
+                <com.tekrevol.mantra.widget.AnyTextView
+
+                    app:typeface="@string/font_regular"
+                    android:id="@+id/genre"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|start"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_marginLeft="5dp"
+                    android:minLines="1"
+                    android:text="depression"
+                    android:textColor="#5797E9"
+                    android:textSize="12sp" />
+
+                <ImageView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@id/layout3"
+                    android:layout_toRightOf="@id/layout3"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:src="@drawable/ellipse" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+
+                    app:typeface="@string/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="@dimen/x10dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:id="@+id/time"
+                    android:text="20 sec"
+                    android:textColor="#999FAB"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+
+</RelativeLayout>

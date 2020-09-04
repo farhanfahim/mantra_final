@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/x200dp"
+    android:layout_height="150dp"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout
+        android:id="@+id/cont_play"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x150dp"
+        android:background="#E9D6D7"
+        android:padding="@dimen/x10dp"
+        app:corner_radius="@dimen/x10dp">
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:layout_marginTop="-5dp"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout2"
+
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <com.jcminarro.roundkornerlayout.RoundKornerLinearLayout
+                    android:layout_width="26dp"
+                    android:visibility="gone"
+                    android:layout_height="23dp"
+                    android:layout_gravity="start|center"
+                    android:layout_toEndOf="@id/layout3"
+                    android:layout_toRightOf="@id/layout3"
+                    android:background="#D5B4B5"
+                    android:gravity="center"
+                    android:id="@+id/iconbgcolor"
+                    app:corner_radius="@dimen/x3dp">
+
+
+                    <ImageView
+
+                        android:id="@+id/imgicon"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/child" />
+
+                </com.jcminarro.roundkornerlayout.RoundKornerLinearLayout>
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/categories_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="2"
+                    android:minLines="1"
+                    android:text="Children Group Laughing"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/s15"
+                    app:typeface="@string/font_bold" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/time"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x5dp"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    app:typeface="@string/font_medium"
+                    android:text="15 sec"
+                    android:textColor="#FFFFFF" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </com.jcminarro.roundkornerlayout.RoundKornerRelativeLayout>
+
+</RelativeLayout>

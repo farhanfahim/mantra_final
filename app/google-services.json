@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "351653210381",
+    "firebase_url": "https://mantra-a38d1.firebaseio.com",
+    "project_id": "mantra-a38d1",
+    "storage_bucket": "mantra-a38d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351653210381:android:becc03f2f4ce6a0f892844",
+        "android_client_info": {
+          "package_name": "com.tekrevol.mantra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351653210381-1gbkuguuo554oqfvm6q8oi42hv4c897g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tekrevol.mantra",
+            "certificate_hash": "8336ece01d5e4bd4bf21639964d153f7ce1cc101"
+          }
+        },
+        {
+          "client_id": "351653210381-093uj1l9egfdf87gi2vu3pce9kuuk7v4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2uuxuoiiaD9JAdNBvIdKIlwdMFkOYXYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351653210381-093uj1l9egfdf87gi2vu3pce9kuuk7v4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "351653210381-pqtgsrec4jtbtslkf4obmg7no9qcpp8m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tekrevol.Mantra"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
