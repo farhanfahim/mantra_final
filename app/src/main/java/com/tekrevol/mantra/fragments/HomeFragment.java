@@ -179,7 +179,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getHomeActivity().showBottomBar();
+        //getHomeActivity().showBottomBar();
 
         btn_search = view.findViewById(R.id.btn_search);
         layoutFavv = view.findViewById(R.id.layoutFav);
@@ -194,7 +194,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         mPublisherAdView.loadAd(publisherAdRequest);*/
         // mPublisherAdView = (PublisherAdView) getView().findViewById(R.id.fluid_view);
 
-        TemplateView template = getView().findViewById(R.id.my_template);
+        /*TemplateView template = getView().findViewById(R.id.my_template);
         adLoader = new AdLoader.Builder(getContext(), "ca-app-pub-3940256099942544/2247696110")
                 .forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
                     @Override
@@ -217,7 +217,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                         .build())
                 .build();
 
-        adLoader.loadAd(new PublisherAdRequest.Builder().build());
+        adLoader.loadAd(new PublisherAdRequest.Builder().build());*/
 
 
     }

@@ -121,6 +121,7 @@ public class AppConstants {
     public static String SOCIAL_MEDIA_PLATFORM_FACEBOOK = "android";
     public static final int FILE_TYPE_PUBLIC = 20;
     public static final int FILE_TYPE_PRIVATE = 10;
+    public static final int IS_MINE = 1;
     public static final int ACTION_LIKE = 40;
     public static final int ACTION_UNLIKE = 10;
     public static final int ACTION_FAV = 50;
@@ -134,6 +135,9 @@ public class AppConstants {
     public static final int EXPECTATION_LEVEL_MET  = 20;
     public static final int EXPECTATION_LEVEL_BELOW  = 30;
     public static final int EXPECTATION_LEVEL_NONE  = 40;
+
+    //private category
+    public static final int PRIVATE_CATEGORY = 5;
 
 
 

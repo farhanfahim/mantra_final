@@ -56,6 +56,7 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
     private MediaAdapter mediaAdapter;
     private ArrayList<MediaModel> arrCategory;
     private int categoryid;
+    private int parentId;
     private String name;
     private int offset;
     private static int limit = 11;
@@ -70,6 +71,17 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
         Bundle args = new Bundle();
         CategoryViewAllFragment fragment = new CategoryViewAllFragment();
         fragment.categoryid = id;
+        fragment.name = name;
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static CategoryViewAllFragment newInstance(int id, String name,int parentId) {
+
+        Bundle args = new Bundle();
+        CategoryViewAllFragment fragment = new CategoryViewAllFragment();
+        fragment.categoryid = id;
+        fragment.parentId = parentId;
         fragment.name = name;
         fragment.setArguments(args);
         return fragment;
@@ -129,13 +141,25 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
             recyclerviewChildrenlaugh.showShimmer();
 
         }
-
         Map<String, Object> mquery = new HashMap<>();
-        mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
-        mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
-        mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
-        mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
-        mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
+        if (parentId == 5){
+
+            //mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
+            mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
+            mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
+            mquery.put(WebServiceConstants.Q_DRAFT, AppConstants.IS_MINE);
+            mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
+            mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
+
+        }else{
+            mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
+            mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
+            mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
+            mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
+            mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
+        }
+
+
 
 
         categoriesCall = getBaseWebServices(false).getAPIAnyObject(WebServiceConstants.PATH_MEDIA, mquery, new WebServices.IRequestWebResponseAnyObjectCallBack() {
