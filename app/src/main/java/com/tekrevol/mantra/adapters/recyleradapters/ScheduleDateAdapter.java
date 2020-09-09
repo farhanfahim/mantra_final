@@ -59,6 +59,7 @@ public class ScheduleDateAdapter extends RecyclerView.Adapter<ScheduleDateAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int i) {
         AlarmModel model = arrData.get(i);
+
         holder.txtdate.setText(model.getDateTime());
         setListener(holder, model);
     }

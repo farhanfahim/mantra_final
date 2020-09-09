@@ -144,7 +144,7 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
         Map<String, Object> mquery = new HashMap<>();
         if (parentId == 5){
 
-            //mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
+            mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
             mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
             mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
             mquery.put(WebServiceConstants.Q_DRAFT, AppConstants.IS_MINE);

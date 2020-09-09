@@ -242,10 +242,10 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                 spinnerModelArrayList.clear();
 
                 for (SubCategories categories : arrCategories) {
-                    if (categories.getParentId() == AppConstants.PRIVATE_CATEGORY){
+                    if (categories.getParentId() == AppConstants.PRIVATE_CATEGORY) {
                         fileTypeValue = AppConstants.FILE_TYPE_PRIVATE;
-                        spinnerModelArrayList.add(new SpinnerModel(categories.getName()+" / Private"));
-                    }else{
+                        spinnerModelArrayList.add(new SpinnerModel(categories.getName() + " / Private"));
+                    } else {
                         fileTypeValue = AppConstants.FILE_TYPE_PUBLIC;
                         spinnerModelArrayList.add(new SpinnerModel(categories.getName()));
                     }
@@ -502,7 +502,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         File mediaFile = new File(root.getAbsolutePath() + "/VoiceRecorderMantra/Audios/" + fileName);
         if (mediaFile.exists()) {
             alarmMedia();
-        }else {
+        } else {
 
             PRDownloader.download(mediaModel.getFileAbsoluteUrl(), dirPath, fileName)
                     .build()
@@ -556,7 +556,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         }
     }
 
-    private void alarmMedia(){
+    private void alarmMedia() {
         String path = Utils.getPath(dirPath, fileName);
                        /* for (AlarmModel alarmModel : arrDate) {
                             int alarmRandomId = random.nextInt(10000);
@@ -689,15 +689,19 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
 
         for (SubCategories category : arrCategories) {
             String selectedCategory = txtmantracategory.getText().toString();
-            if (selectedCategory.contains(" / Private")){
+            if (selectedCategory.contains(" / Private")) {
+
                 String str = selectedCategory;
-                String[] arrOfStr = str.split(" ");
-                fileTypeValue = AppConstants.FILE_TYPE_PRIVATE;
-                Toast.makeText(getContext(),category.getParentId()+"",Toast.LENGTH_SHORT).show();
-                return  category.getId();
+                String strNew = str.replaceFirst(" / Private", "");
+                if (category.getName().equals(strNew)) {
+                    fileTypeValue = AppConstants.FILE_TYPE_PRIVATE;
+                    //Toast.makeText(getContext(), category.getId() + "", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), strNew, Toast.LENGTH_SHORT).show();
+                    return category.getId();
+                }
+
             }
             if (category.getName().equals(selectedCategory)) {
-
                 fileTypeValue = AppConstants.FILE_TYPE_PUBLIC;
                 return category.getId();
             }
@@ -732,11 +736,11 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                 alarmModel.getAlarmId(), intent, FLAG_UPDATE_CURRENT);
 
         alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
-        long triggerAtMillis =alarmModel.getUnixDTTM();
-        if(SDK_INT > LOLLIPOP) {
+        long triggerAtMillis = alarmModel.getUnixDTTM();
+        if (SDK_INT > LOLLIPOP) {
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(triggerAtMillis, alarmIntent);
             alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
-        } else if(SDK_INT > KITKAT) {
+        } else if (SDK_INT > KITKAT) {
             alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
         } else {
             alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
