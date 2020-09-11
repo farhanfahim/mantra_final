@@ -7,16 +7,19 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.activities.AlarmActivity;
+import com.tekrevol.mantra.activities.HomeActivity;
 import com.tekrevol.mantra.activities.MainActivity;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.enums.DBModelTypes;
@@ -29,7 +32,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     private ObjectBoxManager objectBoxManager;
     Context ctx;
     long generalDBID = -1;
-    int alarmId = -1;
+    static int alarmId = -1;
+    NotificationManager notificationManager;
+    public static MediaPlayer mMediaPlayer;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,10 +54,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
 
-
         generalDBID = intent.getLongExtra(AppConstants.GENERAL_DB_ID, -1);
         alarmId = intent.getIntExtra(AppConstants.ALARM_ID, -1);
-
 
 
         Log.d("ALARM", "onReceive: " + "General DB ID: " + generalDBID);
@@ -80,7 +83,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 scheduledMantraMediaModel.getAlarms().remove(alarmModel);
                 objectBoxManager.putGeneralDBModel(generalDBID, scheduledMantraMediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
 
-            }else{
+            } else {
                 Intent serviceIntent = new Intent(ctx, ExampleService.class);
                 ctx.stopService(serviceIntent);
             }
@@ -91,7 +94,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
 
-        openActivity(AlarmActivity.class, generalDBID);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+            showNotification(alarmId, scheduledMantraMediaModel);
+            playRingtone(scheduledMantraMediaModel, context);
+        } else {
+            openActivity(AlarmActivity.class, generalDBID);
+        }
+
 
     }
 
@@ -113,16 +122,15 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     /**
      * Create and show a simple notification containing using MediaModel model.
-     *
      */
-    private void sendNotification(int alarmId,  MediaModel mediaModel) {
+    private void sendNotification(int alarmId, MediaModel mediaModel) {
 
         Intent intent;
         intent = new Intent(ctx, MainActivity.class);
 //        intent.putExtra(constants.K_LOG_ID, logsRowId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, (int)alarmId /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(ctx, (int) alarmId /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -147,35 +155,42 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
 
-
-    public void showNotification(int alarmId,  MediaModel mediaModel) {
+    public void showNotification(int alarmId, MediaModel mediaModel) {
         Intent intent;
         intent = new Intent(ctx, MainActivity.class);
 //        intent.putExtra(constants.K_LOG_ID, logsRowId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("action", "actionName");
+
+        Intent intentAction = new Intent(ctx, ActionReceiver.class);
+        intentAction.putExtra("action", "actionName");
+        PendingIntent pIntentAction = PendingIntent.getBroadcast(ctx, 1, intentAction, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         PendingIntent pendingIntent = PendingIntent.getActivity(ctx,
                 alarmId,
-                intent, PendingIntent.FLAG_ONE_SHOT);
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String CHANNEL_ID = "papp_channel";// The id of the channel.
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
                 .setSmallIcon(R.drawable.img_mantra_status_logo)
                 .setContentTitle(mediaModel.getName())
                 .setContentText(mediaModel.getDescription())
-                .setAutoCancel(true)
+                .setAutoCancel(false)
+                .setOngoing(true)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentIntent(pendingIntent);
-        NotificationManager notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+                .setContentIntent(pendingIntent)
+
+                .addAction(0, "Cancel Alarm", pIntentAction);
+        notificationManager = (NotificationManager) ctx.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = ctx.getString(R.string.app_name);// The user-visible name of the channel.
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
             notificationManager.createNotificationChannel(mChannel);
         }
-        notificationManager.notify(alarmId, notificationBuilder.build());
+        stopRingtone();
+        notificationManager.notify(0, notificationBuilder.build());
 
-        Log.d("showNotification", "showNotification: " + alarmId);
     }
 
     public void openActivity(Class<?> tClass, long id) {
@@ -189,7 +204,70 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     }
 
+    public void playRingtone(MediaModel mediaModel, Context context) {
+        mMediaPlayer = new MediaPlayer();
+        try {
+            mMediaPlayer.setDataSource(mediaModel.getFileAbsoluteUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        try {
+            //   mMediaPlayer.setLooping(true);
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+
+                    if (notificationManager != null) {
+                        notificationManager.cancelAll();
+                        cancelNotification(context, 0);
+                        stopRingtone();
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void stopRingtone() {
+        if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+            mMediaPlayer.reset();
+            mMediaPlayer.stop();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+
+    }
+
+    public static void cancelNotification(Context ctx, int notifyId) {
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager nMgr = (NotificationManager) ctx.getSystemService(ns);
+        nMgr.cancel(notifyId);
+    }
+
+    public static class ActionReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getStringExtra("action");
+            if (action.equals("actionName")) {
+                stopRingtone();
+                cancelNotification(context, 0);
+            }
+
+            Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            context.sendBroadcast(it);
+        }
+
+
+    }
 
 
 }
+
+

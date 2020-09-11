@@ -111,7 +111,7 @@
 
 
         <receiver android:name=".broadcast.AlarmReceiver" />
-
+        <receiver android:name=".broadcast.AlarmReceiver$ActionReceiver" />
         <activity
             android:name=".activities.AlarmActivity"
             android:label="@string/app_name"
