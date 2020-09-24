@@ -44,7 +44,7 @@ public class AppConstants {
 
     public static final String FORMAT_DATE_SHOW = "dd MMMM yyyy";
   //  public static final String FORMAT_DATE_SEND = "dd/MM/yyyy HH:mm:ss";
-    public static final String FORMAT_DATE_SEND = "dd/MM/yyyy hh:mm:ss a";
+    public static final String FORMAT_DATE_SEND = "MM/dd/yyyy hh:mm:ss a";
 
 
     /**

@@ -90,6 +90,53 @@
                 </com.todkars.shimmer.ShimmerRecyclerView>
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <com.tekrevol.mantra.widget.AnyTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="daily mantra"
+                        android:text="Latest Mantras"
+                        android:textColor="@color/txtBlack"
+                        android:textSize="15sp"
+                        app:textAllCaps="true"
+                        app:typeface="@string/font_bold" />
+
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+                <com.todkars.shimmer.ShimmerRecyclerView
+                    android:id="@+id/recyclerview_dailymantra"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:fadeScrollbars="false"
+                    android:scrollbars="horizontal">
+
+                </com.todkars.shimmer.ShimmerRecyclerView>
+                <!-- <android.support.v7.widget.RecyclerView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                     android:orientation="horizontal"
+                     tools:listitem="@layout/customlist_dailymantra"
+                     android:id="@+id/recyclerview_dailymantra">
+
+                 </android.support.v7.widget.RecyclerView>-->
+
+                <LinearLayout
                     android:id="@+id/layoutFav"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -134,7 +181,6 @@
                     </RelativeLayout>
 
                 </LinearLayout>
-
                 <com.todkars.shimmer.ShimmerRecyclerView
                     android:id="@+id/rvFavHomeScreen"
                     android:layout_width="match_parent"
@@ -146,47 +192,6 @@
                     tools:listitem="@layout/customlist_fav_homescreen">
 
                 </com.todkars.shimmer.ShimmerRecyclerView>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <com.tekrevol.mantra.widget.AnyTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="daily mantra"
-                        android:text="Latest Mantras"
-                        android:textColor="@color/txtBlack"
-                        android:textSize="15sp"
-                        app:textAllCaps="true"
-                        app:typeface="@string/font_bold" />
-
-
-                </LinearLayout>
-
-                <com.todkars.shimmer.ShimmerRecyclerView
-                    android:id="@+id/recyclerview_dailymantra"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:fadeScrollbars="false"
-                    android:scrollbars="horizontal">
-
-                </com.todkars.shimmer.ShimmerRecyclerView>
-                <!-- <android.support.v7.widget.RecyclerView
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                     android:orientation="horizontal"
-                     tools:listitem="@layout/customlist_dailymantra"
-                     android:id="@+id/recyclerview_dailymantra">
-
-                 </android.support.v7.widget.RecyclerView>-->
 
             </LinearLayout>
 

@@ -59,24 +59,29 @@ The more details you can provide, the better would be"
                     android:id="@+id/btnRadio"
                     android:padding="@dimen/x5dp"
                     android:layout_width="match_parent"
+                    android:orientation="vertical"
                     android:layout_height="wrap_content">
 
                     <RadioButton
+                        android:id="@+id/radioBtn1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/txtDarkGrey"
                         android:text="Exceeded Expectations" />
                     <RadioButton
+                        android:id="@+id/radioBtn2"
                         android:layout_width="match_parent"
                         android:textColor="@color/txtDarkGrey"
                         android:layout_height="wrap_content"
                         android:text="Met Expectations" />
                     <RadioButton
+                        android:id="@+id/radioBtn3"
                         android:layout_width="match_parent"
                         android:textColor="@color/txtDarkGrey"
                         android:layout_height="wrap_content"
                         android:text="Below Expectations" />
                     <RadioButton
+                        android:id="@+id/radioBtn4"
                         android:layout_width="match_parent"
                         android:textColor="@color/txtDarkGrey"
                         android:layout_height="wrap_content"

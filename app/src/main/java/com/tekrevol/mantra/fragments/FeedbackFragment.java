@@ -3,9 +3,13 @@ package com.tekrevol.mantra.fragments;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.constatnts.AppConstants;
@@ -35,9 +39,10 @@ public class FeedbackFragment extends BaseFragment {
     AnyTextView btnSubmit;
     @BindView(R.id.save)
     LinearLayout save;
+    RadioButton r1,r2,r3,r4;
     private RadioButton radioButton;
     Call<WebResponse<Object>> call;
-
+    int selectedId = 0;
 
     @Override
     public int getDrawerLockMode() {
@@ -67,7 +72,6 @@ public class FeedbackFragment extends BaseFragment {
 
     @Override
     public void setListeners() {
-
     }
 
     @Override
@@ -85,8 +89,53 @@ public class FeedbackFragment extends BaseFragment {
         feedbackApi();
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        r1 = view.findViewById(R.id.radioBtn1);
+        r2 = view.findViewById(R.id.radioBtn2);
+        r3 = view.findViewById(R.id.radioBtn3);
+        r4 = view.findViewById(R.id.radioBtn4);
+
+        r1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    selectedId = 1;
+                }
+            }
+        });
+
+        r2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    selectedId = 2;
+                }
+            }
+        });
+
+        r3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    selectedId = 3;
+                }
+            }
+        });
+        r4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    selectedId = 4;
+                }
+            }
+        });
+
+    }
+
     private void feedbackApi() {
-        if (btnRadio.getCheckedRadioButtonId() == -1) {
+        if (selectedId == 0) {
             UIHelper.showAlertDialog(getContext(), "Please select from above expectation");
             return;
         }
@@ -95,10 +144,11 @@ public class FeedbackFragment extends BaseFragment {
             return;
         }
 
-        int selectedId = btnRadio.getCheckedRadioButtonId();
-        radioButton = (RadioButton) view.findViewById(selectedId);
+        //selectedId = btnRadio.getCheckedRadioButtonId();
+        //radioButton = (RadioButton) view.findViewById(selectedId);
         FeedbackModel userAction = new FeedbackModel();
         userAction.setUser_id(getCurrentUser().getId());
+
 
         if (selectedId == 1) {
             userAction.setExpectation_level(AppConstants.EXPECTATION_LEVEL_EXCEEDED);
