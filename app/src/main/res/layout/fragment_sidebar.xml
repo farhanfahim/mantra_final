@@ -115,6 +115,19 @@
                     app:typeface="@string/font_medium" />
 
                 <com.tekrevol.mantra.widget.AnyTextView
+                    android:id="@+id/libraryOfPositivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/x10dp"
+                    android:contentDescription="Privacy policy"
+                    android:gravity="center"
+                    android:text="Library of Positivity"
+                    android:textColor="@color/c_white"
+                    android:textSize="@dimen/s18"
+                    app:typeface="@string/font_medium" />
+
+                <com.tekrevol.mantra.widget.AnyTextView
                     android:id="@+id/privacy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

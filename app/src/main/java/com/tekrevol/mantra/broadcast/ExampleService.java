@@ -31,7 +31,7 @@ public class ExampleService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.img_mantra_status_logo)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);

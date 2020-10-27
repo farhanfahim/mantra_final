@@ -4,7 +4,7 @@
     android:id="@+id/contParentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splashimage">
+    android:background="@drawable/splash_image">
 
 
     <TextView

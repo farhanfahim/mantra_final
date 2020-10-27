@@ -88,6 +88,7 @@ public class AppConstants {
     public static final String KEY_CARD_NUMBER = "card_number";
     public static final String KEY_CODE = "code";
     public static final String KEY_ABOUT = "2";
+    public static final String KEY_LIBRARY_OF_POSITIVITY = "4";
     public static final String KEY_PRIVACY = "1";
     public static final String KEY_TERMS = "3";
     public static final String USER_NOTIFICATION_DATA = "USER_NOTIFICATION_DATA";

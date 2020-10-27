@@ -136,7 +136,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx)
-                .setSmallIcon(R.drawable.img_mantra_status_logo)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(mediaModel.getName())
                 .setContentText(mediaModel.getDescription())
                 .setAutoCancel(true)
@@ -172,7 +172,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         String CHANNEL_ID = "papp_channel";// The id of the channel.
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
-                .setSmallIcon(R.drawable.img_mantra_status_logo)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(mediaModel.getName())
                 .setContentText(mediaModel.getDescription())
                 .setAutoCancel(false)

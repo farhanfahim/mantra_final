@@ -50,6 +50,8 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
     AnyTextView profile;
     @BindView(R.id.about)
     AnyTextView about;
+    @BindView(R.id.libraryOfPositivity)
+    AnyTextView libraryOfPositivity;
     @BindView(R.id.privacy)
     AnyTextView privacy;
     @BindView(R.id.logout)
@@ -139,7 +141,7 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
     }
 
 
-    @OnClick({R.id.btnBack, R.id.profile, R.id.about, R.id.privacy, R.id.logout, R.id.cancel, R.id.changepass, R.id.feedback})
+    @OnClick({R.id.btnBack, R.id.profile, R.id.about, R.id.libraryOfPositivity,R.id.privacy, R.id.logout, R.id.cancel, R.id.changepass, R.id.feedback})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnBack:
@@ -151,6 +153,9 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
                 break;
             case R.id.about:
                 aboutAPI(AppConstants.KEY_ABOUT);
+                break;
+            case R.id.libraryOfPositivity:
+                libraryOfPositivityAPI(AppConstants.KEY_LIBRARY_OF_POSITIVITY);
                 break;
             case R.id.privacy:
                 aboutAPI(AppConstants.KEY_PRIVACY);
@@ -193,6 +198,32 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
         });
 
     }
+
+    private void libraryOfPositivityAPI(String slugId) {
+
+        Map<String, Object> queryMap = new HashMap<>();
+
+        aboutCall = getBaseWebServices(true).getAPIAnyObject(WebServiceConstants.PATH_PAGES + "/" + slugId, queryMap, new WebServices.IRequestWebResponseAnyObjectCallBack() {
+            @Override
+            public void requestDataResponse(WebResponse<Object> webResponse) {
+
+
+                Slug pagesModel = GsonFactory.getSimpleGson()
+                        .fromJson(GsonFactory.getSimpleGson().toJson(webResponse.result)
+                                , Slug.class);
+
+                getBaseActivity().addDockableFragment(GenericContentFragment.newInstance(pagesModel.getTitle(), pagesModel.getContent(), true), false);
+
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
+
+    }
+
 
     @Override
     public void onDestroyView() {
