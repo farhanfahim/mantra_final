@@ -243,7 +243,7 @@ public class CategoriesFragment extends BaseFragment implements OnItemClickListe
 
         SubCategories model = (SubCategories) object;
         if (SubCategoriesAdapter.class.getSimpleName().equals(adapterName)) {
-            getBaseActivity().addDockableFragment(CategoryViewAllFragment.newInstance(model.getId(), model.getName(),model.getParentId()), true);
+            getBaseActivity().addDockableFragment(CategoryViewAllFragment.newInstance(model.getId(), model.getName()/*model.getParentId()*/), true);
         }
 
     }

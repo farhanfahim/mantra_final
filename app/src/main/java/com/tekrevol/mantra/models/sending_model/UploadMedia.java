@@ -16,9 +16,9 @@ public class UploadMedia {
     @SerializedName("type")
     private int fileType;
 
-    @Expose
+    /*@Expose
     @SerializedName("is_mine")
-    private int isMine;
+    private int isMine;*/
     @Expose
     @SerializedName("name")
     private String name;
@@ -26,13 +26,13 @@ public class UploadMedia {
     @SerializedName("category_id")
     private int categoryId;
 
-    public int getIsMine() {
+   /* public int getIsMine() {
         return isMine;
     }
 
     public void setIsMine(int isMine) {
         this.isMine = isMine;
-    }
+    }*/
 
     public String getDescription() {
         return description;

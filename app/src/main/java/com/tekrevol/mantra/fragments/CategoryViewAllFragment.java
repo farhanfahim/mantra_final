@@ -76,16 +76,16 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
         return fragment;
     }
 
-    public static CategoryViewAllFragment newInstance(int id, String name,int parentId) {
+    /*  public static CategoryViewAllFragment newInstance(int id, String name*//*,int parentId*//*) {
 
         Bundle args = new Bundle();
         CategoryViewAllFragment fragment = new CategoryViewAllFragment();
         fragment.categoryid = id;
-        fragment.parentId = parentId;
+        //fragment.parentId = parentId;
         fragment.name = name;
         fragment.setArguments(args);
         return fragment;
-    }
+    }*/
 
     @Override
     public int getDrawerLockMode() {
@@ -142,7 +142,7 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
 
         }
         Map<String, Object> mquery = new HashMap<>();
-        if (parentId == 5){
+       /* if (parentId == 5){
 
             mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
             mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
@@ -158,8 +158,12 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
             mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
             mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
         }
-
-
+*/
+        mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
+        mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
+        mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
+        mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
+        mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
 
 
         categoriesCall = getBaseWebServices(false).getAPIAnyObject(WebServiceConstants.PATH_MEDIA, mquery, new WebServices.IRequestWebResponseAnyObjectCallBack() {

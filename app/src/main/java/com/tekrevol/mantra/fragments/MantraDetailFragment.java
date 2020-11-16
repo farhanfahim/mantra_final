@@ -242,13 +242,14 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                 spinnerModelArrayList.clear();
 
                 for (SubCategories categories : arrCategories) {
-                    if (categories.getParentId() == AppConstants.PRIVATE_CATEGORY) {
+                    spinnerModelArrayList.add(new SpinnerModel(categories.getName()));
+                    /*if (categories.getParentId() == AppConstants.PRIVATE_CATEGORY) {
                         fileTypeValue = AppConstants.FILE_TYPE_PRIVATE;
                         spinnerModelArrayList.add(new SpinnerModel(categories.getName() + " / Private"));
                     } else {
                         fileTypeValue = AppConstants.FILE_TYPE_PUBLIC;
                         spinnerModelArrayList.add(new SpinnerModel(categories.getName()));
-                    }
+                    }*/
 
                 }
             }
@@ -685,24 +686,11 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         });
     }
 
+
     private int getIdFromSpinner() {
 
         for (SubCategories category : arrCategories) {
-            String selectedCategory = txtmantracategory.getText().toString();
-            if (selectedCategory.contains(" / Private")) {
-
-                String str = selectedCategory;
-                String strNew = str.replaceFirst(" / Private", "");
-                if (category.getName().equals(strNew)) {
-                    fileTypeValue = AppConstants.FILE_TYPE_PRIVATE;
-                    //Toast.makeText(getContext(), category.getId() + "", Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getContext(), strNew, Toast.LENGTH_SHORT).show();
-                    return category.getId();
-                }
-
-            }
-            if (category.getName().equals(selectedCategory)) {
-                fileTypeValue = AppConstants.FILE_TYPE_PUBLIC;
+            if (category.getName().equals(txtmantracategory.getStringTrimmed())) {
                 return category.getId();
             }
         }
