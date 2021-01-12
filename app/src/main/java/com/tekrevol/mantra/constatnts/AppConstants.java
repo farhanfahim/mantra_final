@@ -117,6 +117,7 @@ public class AppConstants {
      */
 
     public static final String NO_RECORD_FOUND = "No Record Found";
+    public static Boolean IS_LOGOUT = false;
 
     public static String DEVICE_OS_ANDROID = "android";
     public static String SOCIAL_MEDIA_PLATFORM_FACEBOOK = "android";

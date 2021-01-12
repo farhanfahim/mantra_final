@@ -3,6 +3,7 @@ package com.tekrevol.mantra.fragments;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -713,7 +714,6 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
      * A custom method set the schedule alarm via AlarmManager.
      */
     private void scheduleAlarm(long mediaId, AlarmModel alarmModel) {
-
         AlarmManager alarmMgr;
         PendingIntent alarmIntent;
         alarmMgr = (AlarmManager) getBaseActivity().getSystemService(Context.ALARM_SERVICE);

@@ -59,11 +59,12 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
     private int parentId;
     private String name;
     private int offset;
-    private static int limit = 11;
+    private int limit = 10;
     private Boolean selected = false;
     private MediaPlayer mediaPlayer;
     int fileTypeValue = AppConstants.FILE_TYPE_PUBLIC;
 
+    private int x = 0;
     Call<WebResponse<Object>> categoriesCall;
 
     public static CategoryViewAllFragment newInstance(int id, String name) {
@@ -137,7 +138,7 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
     private void getMedia(int limit, int offset) {
 
 
-        if (offset == 0) {
+        if (x == 0) {
             recyclerviewChildrenlaugh.showShimmer();
 
         }
@@ -159,9 +160,9 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
             mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
         }
 */
-        mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);
+        mquery.put(WebServiceConstants.Q_PARAM_CATEGORIESID, categoryid);/*
         mquery.put(WebServiceConstants.Q_PARAM_LIMIT, limit);
-        mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);
+        mquery.put(WebServiceConstants.Q_PARAM_OFFSET, offset);*/
         mquery.put(WebServiceConstants.Q_PARAM_ORDERBY, AppConstants.ORDER_BY_ID);
         mquery.put(WebServiceConstants.Q_PARAM_SORTED, AppConstants.SORTED_BY);
 
@@ -178,7 +179,7 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
 
                 // arrCategory.clear();
 
-                if (offset == 0) {
+                if (x == 0) {
                     recyclerviewChildrenlaugh.hideShimmer();
 
                 }
@@ -376,10 +377,10 @@ public class CategoryViewAllFragment extends BaseFragment implements OnItemClick
         if (offset < i) {
 
             offset = i;
+            x++;
+            progressBarActivitymain.setVisibility(View.GONE);
 
-            progressBarActivitymain.setVisibility(View.VISIBLE);
-
-            getMedia(limit, i);
+            //getMedia(limit, i);
         }
     }
 

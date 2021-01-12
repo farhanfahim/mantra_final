@@ -1,9 +1,15 @@
 package com.tekrevol.mantra.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
@@ -25,6 +31,8 @@ import com.tekrevol.mantra.models.sending_model.SocialLoginSendingModel;
 import com.tekrevol.mantra.models.wrappers.UserModelWrapper;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static com.tekrevol.mantra.constatnts.WebServiceConstants.PATH_SOCIAL_LOGIN;
@@ -47,6 +55,7 @@ public class MainActivity extends BaseActivity implements FacebookResponse {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        printHashKey(this);
         mFbHelper = new FacebookHelper(this,
                 "id,name,email,gender,birthday,picture",
                 this);
@@ -211,5 +220,23 @@ public class MainActivity extends BaseActivity implements FacebookResponse {
     @Override
     public void onFBSignOut() {
 
+    }
+
+    public static void printHashKey(Context context) {
+        // Add code to print out the key hash
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(),
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 }

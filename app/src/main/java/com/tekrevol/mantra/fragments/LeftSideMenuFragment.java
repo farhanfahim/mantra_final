@@ -1,5 +1,8 @@
 package com.tekrevol.mantra.fragments;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +12,12 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.activities.MainActivity;
+import com.tekrevol.mantra.broadcast.ExampleService;
 import com.tekrevol.mantra.callbacks.OnNewPacketReceivedListener;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.constatnts.WebServiceConstants;
@@ -161,9 +166,13 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
                 aboutAPI(AppConstants.KEY_PRIVACY);
                 break;
             case R.id.logout:
-                ObjectBoxManager.INSTANCE.removeAllDB();
+                if (isMyServiceRunning(ExampleService.class)){
+                    stopService();
+                }
+                //ObjectBoxManager.INSTANCE.removeAllDB();
                 sharedPreferenceManager.clearDB();
                 getBaseActivity().clearAllActivitiesExceptThis(MainActivity.class);
+
                 break;
             case R.id.feedback:
                 getBaseActivity().addDockableFragment(FeedbackFragment.newInstance(), true);
@@ -172,6 +181,22 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
                 getBaseActivity().addDockableFragment(ChangePasswordFragment.newInstance(), true);
                 break;
         }
+    }
+
+    public void stopService() {
+        AppConstants.IS_LOGOUT = true;
+        Intent serviceIntent = new Intent(getContext(), ExampleService.class);
+        getContext().stopService(serviceIntent);
+
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void aboutAPI(String slugId) {

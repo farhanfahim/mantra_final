@@ -1,6 +1,8 @@
 package com.tekrevol.mantra.activities;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -23,20 +26,29 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
+import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.broadcast.ExampleService;
 import com.tekrevol.mantra.constatnts.AppConstants;
+import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.fragments.HomeFragment;
 import com.tekrevol.mantra.fragments.RightSideMenuFragment;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.helperclasses.RunTimePermissions;
 import com.tekrevol.mantra.libraries.residemenu.ResideMenu;
 import com.tekrevol.mantra.managers.ObjectBoxManager;
+import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.utils.utility.Blur;
 import com.tekrevol.mantra.utils.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.KITKAT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
+import static com.tekrevol.mantra.BaseApplication.getContext;
 
 public class HomeActivity extends BaseActivity {
 
@@ -52,6 +64,7 @@ public class HomeActivity extends BaseActivity {
     private String mBackgroundFilename;
     private Bitmap background;
 
+    private ArrayList<MediaModel> arrMovieLines;
     private ImageView imageBlur;
 
 
@@ -75,7 +88,7 @@ public class HomeActivity extends BaseActivity {
             @Override
             public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
 //                v.setPadding(0, 0, 0, v.getPaddingBottom() + insets.getSystemWindowInsetBottom());
-                v.setPadding(0, 0, 0,  insets.getSystemWindowInsetBottom());
+                v.setPadding(0, 0, 0, insets.getSystemWindowInsetBottom());
                 return insets;
             }
         });
@@ -85,9 +98,56 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (!isMyServiceRunning(ExampleService.class)){
+        if (!isMyServiceRunning(ExampleService.class)) {
             startService();
+
+            ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
+            if (!arrayList.isEmpty()) {
+                arrMovieLines = arrayList;
+                ObjectBoxManager.INSTANCE.removeAllDB();
+                getScheduleMantra();
+            }
+
+
         }
+
+    }
+
+
+    private void scheduleAlarmAfterServiceRestart(long mediaId, AlarmModel alarmModel) {
+        AlarmManager alarmMgr;
+        PendingIntent alarmIntent;
+        alarmMgr = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra(AppConstants.GENERAL_DB_ID, mediaId);
+        intent.putExtra(AppConstants.ALARM_ID, alarmModel.getAlarmId());
+        alarmIntent = PendingIntent.getBroadcast(getContext(),
+                alarmModel.getAlarmId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmMgr.cancel(alarmIntent);
+        alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
+        long triggerAtMillis = alarmModel.getUnixDTTM();
+        if (SDK_INT > LOLLIPOP) {
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(triggerAtMillis, alarmIntent);
+            alarmMgr.setAlarmClock(alarmClockInfo, alarmIntent);
+        } else if (SDK_INT > KITKAT) {
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
+        } else {
+            alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
+        }
+
+
+    }
+
+    private void getScheduleMantra() {
+
+        for (MediaModel arr : arrMovieLines) {
+            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, arr.toString(), DBModelTypes.SCHEDULED_MANTRA);
+            for (AlarmModel arrAlarm : arr.getAlarms()) {
+                scheduleAlarmAfterServiceRestart(id, arrAlarm);
+            }
+        }
+
 
     }
 
@@ -95,7 +155,7 @@ public class HomeActivity extends BaseActivity {
         Intent serviceIntent = new Intent(this, ExampleService.class);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             ContextCompat.startForegroundService(this, serviceIntent);
-        }else{
+        } else {
             startService(serviceIntent);
         }
     }

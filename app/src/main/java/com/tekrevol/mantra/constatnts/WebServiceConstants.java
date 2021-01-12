@@ -41,6 +41,12 @@ public class WebServiceConstants {
     public static final String BASE_URL = "http://mantra.demo.servstaging.com/";
     public static final String IMAGE_BASE_URL = "http://mantra.demo.servstaging.com/api/resize/";
 
+
+    // Live
+//    public static final String BASE_URL = "http://app.wakememantra.com/";
+//    public static final String IMAGE_BASE_URL = "http://app.wakememantra.com/api/v1/resize/";
+
+
    /* // STAGING
     public static final String BASE_URL = "http://mantra.servstaging.com";
     public static final String IMAGE_BASE_URL = "http://mantra.servstaging.com/api/resize/";
