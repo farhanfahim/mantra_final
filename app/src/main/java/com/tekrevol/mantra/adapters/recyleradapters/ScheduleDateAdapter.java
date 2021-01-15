@@ -18,6 +18,8 @@ import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.SubCategories;
 import com.tekrevol.mantra.widget.AnyTextView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,7 +81,19 @@ public class ScheduleDateAdapter extends RecyclerView.Adapter<ScheduleDateAdapte
     }
 
     public void setArrData(List<AlarmModel> arrData) {
-        this.arrData = arrData;
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
+
+        ArrayList<AlarmModel> newAlarm  =new ArrayList<AlarmModel>();
+
+        for (AlarmModel arr : arrData){
+            if (arr.getUnixDTTM() > currentTime){
+                newAlarm.add(arr);
+            }
+        }
+
+        this.arrData = newAlarm;
     }
 
 

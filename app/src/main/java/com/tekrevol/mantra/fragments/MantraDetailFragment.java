@@ -56,6 +56,7 @@ import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.managers.retrofit.WebServices;
 import com.tekrevol.mantra.managers.retrofit.entities.MultiFileModel;
 import com.tekrevol.mantra.models.IntWrapper;
+import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.SpinnerModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.Categories;
@@ -122,6 +123,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     @BindView(R.id.scheduleMantraLayout)
     LinearLayout scheduleMantraLayout;
 
+    Call<WebResponse<Object>> webCall;
     private static String dirPath;
     private int downloadId;
     private String file = null;
@@ -323,6 +325,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
 
     @Override
     public void onDestroyView() {
+
         if (categoriesCall != null) {
             categoriesCall.cancel();
         }
@@ -578,6 +581,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         for (AlarmModel alarmModel : arrDate) {
             scheduleAlarm(id, alarmModel);
         }
+        reminderApi(mediaReminder.getId(),arrDate);
 
 
         dismissDialog();
@@ -735,5 +739,25 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         }
 
 
+
+    }
+
+    private void reminderApi(long mediaId,ArrayList<AlarmModel> arrAlarm){
+        ReminderModel reminderModel = new ReminderModel();
+        reminderModel.setMediaId(mediaId);
+        reminderModel.setArrAlarms(arrAlarm);
+
+        webCall = getBaseWebServices(true).postAPIAnyObject(WebServiceConstants.PATH_REMINDERS, reminderModel.toString(), new WebServices.IRequestWebResponseAnyObjectCallBack() {
+            @Override
+            public void requestDataResponse(WebResponse<Object> webResponse) {
+
+                Log.d("success",webResponse.result.toString());
+            }
+
+            @Override
+            public void onError(Object object) {
+
+            }
+        });
     }
 }

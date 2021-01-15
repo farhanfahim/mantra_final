@@ -119,6 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         sharedPreferenceManager.putObject(AppConstants.KEY_CURRENT_USER_MODEL, userModel);
         sharedPreferenceManager.putValue(AppConstants.KEY_CURRENT_USER_ID, userModel.getId());
         sharedPreferenceManager.putValue(AppConstants.KEY_TOKEN, userModel.getAccessToken());
+        sharedPreferenceManager.putValue(AppConstants.IS_LOGIN, true);
 
         finish();
         openActivity(HomeActivity.class);
@@ -156,6 +157,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         }
         fragmentTransaction.replace(getDockableFragmentId(), fragment).addToBackStack(fragment.getClass().getSimpleName())
+                .commit();
+    }
+
+    public void addFragment(Fragment fragment, boolean isTransition) {
+        baseFragment = (BaseFragment) fragment;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentTransaction.add(getDockableFragmentId(), fragment).addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
     }
 

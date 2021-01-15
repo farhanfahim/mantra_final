@@ -203,7 +203,7 @@ public class ChildrenSeeAllFragment extends BaseFragment implements OnItemClickL
     public void onItemClick(int position, Object object, View view, String adapterName) {
         Categories model = (Categories) object;
         getBaseActivity().addDockableFragment(CategoryViewAllFragment.newInstance(model.getId(), model.getName()), false);
-        getBaseActivity().addDockableFragment(CategoryViewAllFragment.newInstance(model.getId(), model.getName()/*,model.getParentId()*/), false);
+        //getBaseActivity().addDockableFragment(CategoryViewAllFragment.newInstance(model.getId(), model.getName()/*,model.getParentId()*/), false);
 
     }
 

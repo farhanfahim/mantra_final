@@ -420,21 +420,21 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
-                getBaseActivity().addDockableFragment(SearchFragment.newInstance(), false);
+                getBaseActivity().addFragment(SearchFragment.newInstance(), false);
             }
         });
 
         btnSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getBaseActivity().addDockableFragment(ScheduleMantraFragment.newInstance(FragmentName.ScheduledMantra), true);
+                getBaseActivity().addFragment(ScheduleMantraFragment.newInstance(FragmentName.ScheduledMantra), true);
             }
         });
 
         btnMyMantra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getBaseActivity().addDockableFragment(TabFragment.newInstance(), true);
+                getBaseActivity().addFragment(TabFragment.newInstance(), true);
             }
         });
 
@@ -442,14 +442,14 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
-                getBaseActivity().addDockableFragment(CategoriesFragment.newInstance(), false);
+                getBaseActivity().addFragment(CategoriesFragment.newInstance(), false);
             }
         });
         imgbtn_home_tab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
-                getBaseActivity().addDockableFragment(AddMantraFragment.newInstance(), false);
+                getBaseActivity().addFragment(AddMantraFragment.newInstance(), false);
             }
         });
 
@@ -473,13 +473,13 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_seeall_childrenlaugh:
-                getBaseActivity().addDockableFragment(CategoriesFragment.newInstance(), true);
+                getBaseActivity().addFragment(CategoriesFragment.newInstance(), true);
                 break;
             case R.id.txt_seeall_movieline:
-                getBaseActivity().addDockableFragment(MovieLinesSeeAllFragment.newInstance(), true);
+                getBaseActivity().addFragment(MovieLinesSeeAllFragment.newInstance(), true);
                 break;
             case R.id.txt_seeall_favorite:
-                getBaseActivity().addDockableFragment(ProfileSeeAllFragment.newInstance(FragmentName.FavouriteMantra), true);
+                getBaseActivity().addFragment(ProfileSeeAllFragment.newInstance(FragmentName.FavouriteMantra), true);
                 break;
         }
     }
@@ -491,10 +491,10 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         boolean isFavNotNull = UIHelper.testArrayListAndPosition(arrFavourite, position);
         if (HomeDailyMantraAdapter.class.getSimpleName().equals(adapterName)) {
             MediaModel model = (MediaModel) object;
-            getBaseActivity().addDockableFragment(DetailFragment.newInstance(model), true);
+            getBaseActivity().addFragment(DetailFragment.newInstance(model), true);
         } else if (HomeChildLaughAdapter.class.getSimpleName().equals(adapterName)) {
             Categories model = (Categories) object;
-            getBaseActivity().addDockableFragment(ChildrenSeeAllFragment.newInstance(model.getId(), model.getName()), true);
+            getBaseActivity().addFragment(ChildrenSeeAllFragment.newInstance(model.getId(), model.getName()), true);
         } else if (FavMediaAdapter.class.getSimpleName().equals(adapterName)) {
             if (isFavNotNull) {
                 switch (view.getId()) {
@@ -555,7 +555,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                         break;
                     case R.id.reminder:
                         MediaModel mediaReminder = (MediaModel) object;
-                        getBaseActivity().addDockableFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
+                        getBaseActivity().addFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
                         break;
                     case R.id.fav:
                         MediaModel media = (MediaModel) object;
@@ -689,7 +689,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                         break;
                     case R.id.reminder:
                         MediaModel mediaReminder = (MediaModel) object;
-                        getBaseActivity().addDockableFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
+                        getBaseActivity().addFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
                         break;
                     case R.id.fav:
                         MediaModel media = (MediaModel) object;

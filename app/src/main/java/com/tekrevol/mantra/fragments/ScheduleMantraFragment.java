@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,14 +29,19 @@ import com.tekrevol.mantra.adapters.recyleradapters.ScheduleMantraAdapter;
 import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.callbacks.OnItemClickListener;
 import com.tekrevol.mantra.callbacks.OnSubItemClickListener;
+import com.tekrevol.mantra.constatnts.AppConstants;
+import com.tekrevol.mantra.constatnts.WebServiceConstants;
 import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.helperclasses.ui.helper.UIHelper;
 import com.tekrevol.mantra.managers.ObjectBoxManager;
+import com.tekrevol.mantra.managers.retrofit.WebServices;
+import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.database.GeneralDBModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
+import com.tekrevol.mantra.models.receiving_model.UserModel;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
 import com.tekrevol.mantra.widget.TitleBar;
 import com.todkars.shimmer.ShimmerRecyclerView;
@@ -64,6 +70,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
     private MediaPlayer mediaPlayer;
     private Boolean selected = false;
     private List<GeneralDBModel> arrayListTest;
+
   /*  private ProfileSeeAllAdapter homeChildLaughAdapter;
     private ArrayList<DummyAdapterModel> arrChildrenLaugh;*/
 
@@ -303,5 +310,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int) alarmId, newIntent, 0);
         alarmMgr.cancel(alarmIntent);
     }
+
+
 
 }
