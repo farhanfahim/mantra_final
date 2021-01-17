@@ -746,6 +746,9 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         ReminderModel reminderModel = new ReminderModel();
         reminderModel.setMediaId(mediaId);
         reminderModel.setArrAlarms(arrAlarm);
+        reminderModel.setUserId(getCurrentUser().getUserDetails().getUserId());
+        reminderModel.setReminderText(txtremindertitle.getStringTrimmed());
+        reminderModel.setDate(DateManager.getCurrentDate());
 
         webCall = getBaseWebServices(true).postAPIAnyObject(WebServiceConstants.PATH_REMINDERS, reminderModel.toString(), new WebServices.IRequestWebResponseAnyObjectCallBack() {
             @Override

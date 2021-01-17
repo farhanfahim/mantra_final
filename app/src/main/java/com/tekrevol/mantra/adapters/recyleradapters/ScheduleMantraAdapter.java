@@ -56,7 +56,7 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
     public void onBindViewHolder(final ViewHolder holder, int i) {
         MediaModel model = arrData.get(i);
         holder.title.setText(model.getName());
-        String date = DateManager.ConvertSecondToHHMMString(model.getMediaLength());
+        String date = DateManager.ConvertSecondToHHMMString(model.getMediaLength ());
         holder.time.setText(date);
 
         /*if (model.getIsFavourite() == 1) {

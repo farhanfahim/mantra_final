@@ -18,8 +18,12 @@ public class MediaModel {
 
     transient boolean isChoice1;
     transient boolean isMedia1;
+    @Expose
+    @SerializedName("title")
     private String reminderText = "";
     private String fileLocalPath = "";
+    @Expose
+    @SerializedName("alarms")
     private ArrayList<AlarmModel> arrAlarms = new ArrayList<>();
     private Date date;
     @Expose
@@ -95,7 +99,9 @@ public class MediaModel {
     @SerializedName("is_like")
     private int isLike;
 
-    protected MediaModel(Parcel in) {
+
+
+    public MediaModel(Parcel in) {
         reminderText = in.readString();
         fileLocalPath = in.readString();
         iconImageUrl = in.readString();
@@ -122,6 +128,10 @@ public class MediaModel {
         isLike = in.readInt();
     }
 
+    public MediaModel() {
+
+    }
+
 
     public String getFileLocalPath() {
         return fileLocalPath;
@@ -137,10 +147,6 @@ public class MediaModel {
 
     public void setReminderText(String reminderText) {
         this.reminderText = reminderText;
-    }
-
-    public ArrayList<AlarmModel> getArrAlarms() {
-        return arrAlarms;
     }
 
     public Date getDate() {

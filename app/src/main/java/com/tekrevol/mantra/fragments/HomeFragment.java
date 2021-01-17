@@ -420,6 +420,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(SearchFragment.newInstance(), false);
             }
         });
@@ -427,6 +428,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         btnSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(ScheduleMantraFragment.newInstance(FragmentName.ScheduledMantra), true);
             }
         });
@@ -434,6 +436,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         btnMyMantra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(TabFragment.newInstance(), true);
             }
         });
@@ -442,6 +445,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(CategoriesFragment.newInstance(), false);
             }
         });
@@ -449,6 +453,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
             @Override
             public void onClick(View v) {
                 getBaseActivity().popStackTill(1);
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(AddMantraFragment.newInstance(), false);
             }
         });
@@ -473,12 +478,15 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txt_seeall_childrenlaugh:
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(CategoriesFragment.newInstance(), true);
                 break;
             case R.id.txt_seeall_movieline:
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(MovieLinesSeeAllFragment.newInstance(), true);
                 break;
             case R.id.txt_seeall_favorite:
+                profileMediaAdapter.resetChoice();
                 getBaseActivity().addFragment(ProfileSeeAllFragment.newInstance(FragmentName.FavouriteMantra), true);
                 break;
         }
@@ -491,9 +499,11 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         boolean isFavNotNull = UIHelper.testArrayListAndPosition(arrFavourite, position);
         if (HomeDailyMantraAdapter.class.getSimpleName().equals(adapterName)) {
             MediaModel model = (MediaModel) object;
+            profileMediaAdapter.resetChoice();
             getBaseActivity().addFragment(DetailFragment.newInstance(model), true);
         } else if (HomeChildLaughAdapter.class.getSimpleName().equals(adapterName)) {
             Categories model = (Categories) object;
+            profileMediaAdapter.resetChoice();
             getBaseActivity().addFragment(ChildrenSeeAllFragment.newInstance(model.getId(), model.getName()), true);
         } else if (FavMediaAdapter.class.getSimpleName().equals(adapterName)) {
             if (isFavNotNull) {
@@ -555,6 +565,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                         break;
                     case R.id.reminder:
                         MediaModel mediaReminder = (MediaModel) object;
+                        profileMediaAdapter.resetChoice();
                         getBaseActivity().addFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
                         break;
                     case R.id.fav:
@@ -689,6 +700,7 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
                         break;
                     case R.id.reminder:
                         MediaModel mediaReminder = (MediaModel) object;
+                        profileMediaAdapter.resetChoice();
                         getBaseActivity().addFragment(MantraDetailFragment.newInstance(mediaReminder, FragmentName.HomeFragment, fileTypeValue, mediaReminder.getName(), mediaReminder.getFileAbsoluteUrl(), mediaReminder.getMediaLength()), true);
                         break;
                     case R.id.fav:
@@ -895,4 +907,5 @@ public class HomeFragment extends BaseFragment implements OnItemClickListener {
         relativeLayoutAds.setVisibility(View.GONE);
 
     }
+
 }

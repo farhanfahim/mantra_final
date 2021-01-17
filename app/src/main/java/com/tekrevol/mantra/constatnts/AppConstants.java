@@ -5,6 +5,9 @@ import android.os.Environment;
 
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.managers.SharedPreferenceManager;
+import com.tekrevol.mantra.models.receiving_model.MediaModel;
+
+import java.util.ArrayList;
 
 
 /**

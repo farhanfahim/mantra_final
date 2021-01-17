@@ -2,17 +2,19 @@ package com.tekrevol.mantra.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tekrevol.mantra.models.receiving_model.Category;
+import com.tekrevol.mantra.models.receiving_model.UserModel;
 
 import java.util.List;
 
-public abstract class ReminderMediaModel {
+public class ReminderMediaModel {
 
     @Expose
     @SerializedName("category")
-    public CategoryEntity category;
+    public Category category;
     @Expose
     @SerializedName("user")
-    public UserEntity user;
+    public UserModel user;
     @Expose
     @SerializedName("is_favourite")
     public int isFavourite;

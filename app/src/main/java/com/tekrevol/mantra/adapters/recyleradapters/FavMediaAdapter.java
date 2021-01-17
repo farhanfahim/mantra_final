@@ -109,6 +109,14 @@ public class FavMediaAdapter extends PagingAdapter {
 
     }
 
+    public void resetChoice(){
+
+        for (MediaModel mediaModel : arrData){
+            mediaModel.setChoice1(false);
+            notifyDataSetChanged();
+        }
+    }
+
     private void setListener(final ViewHolder holder, final MediaModel model) {
         holder.layout1.setOnClickListener(view -> onItemClick.onItemClick(holder.getAdapterPosition(), model, view, FavMediaAdapter.class.getSimpleName()));
         holder.imgbtnClose.setOnClickListener(view -> onItemClick.onItemClick(holder.getAdapterPosition(), model, view, FavMediaAdapter.class.getSimpleName()));

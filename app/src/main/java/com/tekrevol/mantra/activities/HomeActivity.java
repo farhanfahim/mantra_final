@@ -53,7 +53,9 @@ import com.tekrevol.mantra.utils.utility.Utils;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -80,6 +82,7 @@ public class HomeActivity extends BaseActivity {
 
     Call<WebResponse<Object>> webCall;
     private ArrayList<MediaModel> arrMovieLines;
+    private ArrayList<MediaModel> arrMedia;
     private ImageView imageBlur;
 
 
@@ -120,6 +123,9 @@ public class HomeActivity extends BaseActivity {
             if (isLogin){
                 sharedPreferenceManager.putValue(AppConstants.IS_LOGIN,false);
                 getReminders();
+
+                /*ObjectBoxManager.INSTANCE.removeAllDB();
+                getScheduleMantra();*/
             }else{
                 ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
                 if (!arrayList.isEmpty()) {
@@ -129,30 +135,50 @@ public class HomeActivity extends BaseActivity {
                 }
             }
 
-
-
-
         }
 
     }
 
     private void getReminders(){
 
-
-        webCall = getBaseWebServices(true).postAPIAnyObject(WebServiceConstants.PATH_REMINDERS, "", new WebServices.IRequestWebResponseAnyObjectCallBack() {
+        Map<String, Object> mquery = new HashMap<>();
+        webCall = getBaseWebServices(false).getAPIAnyObject(WebServiceConstants.PATH_REMINDERS, mquery, new WebServices.IRequestWebResponseAnyObjectCallBack() {
             @Override
             public void requestDataResponse(WebResponse<Object> webResponse) {
-
-                Type type = new TypeToken<ArrayList<MediaModel>>() {
+                Type type = new TypeToken<ArrayList<ReminderModel>>() {
                 }.getType();
-                arrMovieLines = GsonFactory.getSimpleGson()
+                ArrayList<ReminderModel> arrayList = GsonFactory.getSimpleGson()
                         .fromJson(GsonFactory.getSimpleGson().toJson(webResponse.result)
                                 , type);
-                ObjectBoxManager.INSTANCE.removeAllDB();
-                getScheduleMantra();
-                // arrCategory.clear();
+                MediaModel mediaModel = new MediaModel();
+                ArrayList<MediaModel> arrMedia = new ArrayList<>();
 
+                if (!arrayList.isEmpty()) {
+                    ObjectBoxManager.INSTANCE.removeAllDB();
+                    for (ReminderModel reminderModel : arrayList){
+                        mediaModel.setFileAbsoluteUrl(reminderModel.getReminderMediaModel().fileAbsoluteUrl);
+                        mediaModel.setReminderText(reminderModel.getReminderText());
+                        mediaModel.setDate (reminderModel.getDate());
+                        mediaModel.setId (reminderModel.getMediaId());
+                        mediaModel.setArrAlarms(reminderModel.getArrAlarms());
+                        mediaModel.setUser(reminderModel.getReminderMediaModel().user);
+                        mediaModel.setCategory(reminderModel.getReminderMediaModel().category);
+                        mediaModel.setCategoryId(reminderModel.getReminderMediaModel().categoryId);
+                        mediaModel.setCreatedAt(reminderModel.getReminderMediaModel().createdAt);
+                        mediaModel.setDescription(reminderModel.getReminderMediaModel().description);
+                        mediaModel.setFileMime(reminderModel.getReminderMediaModel().fileMime);
+                        mediaModel.setFilePath(reminderModel.getReminderMediaModel().filePath);
+                        mediaModel.setName(reminderModel.getReminderMediaModel().name);
+                        mediaModel.setMediaLength(reminderModel.getReminderMediaModel().mediaLength);
+                        //arrMedia.add(mediaModel);
+                        getSingleScheduleMantra(mediaModel);
+                    }
 
+                    //arrMovieLines = arrMedia;
+
+                    //getScheduleMantra();
+                }
+                //Toast.makeText(getApplicationContext(),arrMovieLines.size()+"",Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -202,6 +228,22 @@ public class HomeActivity extends BaseActivity {
                     }
                 }
         }
+
+
+    }
+
+    private void getSingleScheduleMantra(MediaModel mediaModel) {
+
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
+
+            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+            for (AlarmModel arrAlarm : mediaModel.getAlarms()){
+                if (arrAlarm.getUnixDTTM() > currentTime){
+                    scheduleAlarmAfterServiceRestart(id, arrAlarm);
+                }
+            }
 
 
     }

@@ -10,6 +10,7 @@ import com.tekrevol.mantra.models.receiving_model.UserModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReminderModel implements Serializable {
 
@@ -22,11 +23,29 @@ public class ReminderModel implements Serializable {
     @Expose
     @SerializedName("media")
     private ReminderMediaModel reminderMediaModel;
+    @Expose
+    @SerializedName("title")
+    private String reminderText = "";
+    private Date date;
 
     private ArrayList<AlarmModel> alarms = new ArrayList<>();
 
 
+    public String getReminderText() {
+        return reminderText;
+    }
 
+    public void setReminderText(String reminderText) {
+        this.reminderText = reminderText;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public ReminderMediaModel getReminderMediaModel() {
         return reminderMediaModel;
