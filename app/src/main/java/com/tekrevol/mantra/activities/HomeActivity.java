@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -22,11 +20,9 @@ import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.broadcast.ExampleService;
@@ -42,28 +38,22 @@ import com.tekrevol.mantra.libraries.residemenu.ResideMenu;
 import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.managers.retrofit.WebServices;
-import com.tekrevol.mantra.models.ReminderMediaModel;
 import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
 import com.tekrevol.mantra.utils.utility.Blur;
 import com.tekrevol.mantra.utils.utility.Utils;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import retrofit2.Call;
-
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.KITKAT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static android.os.Build.VERSION_CODES.P;
 import static com.tekrevol.mantra.BaseApplication.getContext;
 
 public class HomeActivity extends BaseActivity {
@@ -85,11 +75,9 @@ public class HomeActivity extends BaseActivity {
     private ArrayList<MediaModel> arrMedia;
     private ImageView imageBlur;
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-
     }
 
     @Override
@@ -112,7 +100,6 @@ public class HomeActivity extends BaseActivity {
         });
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -123,9 +110,6 @@ public class HomeActivity extends BaseActivity {
             if (isLogin){
                 sharedPreferenceManager.putValue(AppConstants.IS_LOGIN,false);
                 getReminders();
-
-                /*ObjectBoxManager.INSTANCE.removeAllDB();
-                getScheduleMantra();*/
             }else{
                 ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
                 if (!arrayList.isEmpty()) {
@@ -142,6 +126,7 @@ public class HomeActivity extends BaseActivity {
     private void getReminders(){
 
         Map<String, Object> mquery = new HashMap<>();
+        mquery.put(WebServiceConstants.Q_PARAM_IS_MINE, 1);
         webCall = getBaseWebServices(false).getAPIAnyObject(WebServiceConstants.PATH_REMINDERS, mquery, new WebServices.IRequestWebResponseAnyObjectCallBack() {
             @Override
             public void requestDataResponse(WebResponse<Object> webResponse) {
@@ -242,6 +227,8 @@ public class HomeActivity extends BaseActivity {
             for (AlarmModel arrAlarm : mediaModel.getAlarms()){
                 if (arrAlarm.getUnixDTTM() > currentTime){
                     scheduleAlarmAfterServiceRestart(id, arrAlarm);
+                }else{
+                    ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
                 }
             }
 
@@ -438,4 +425,5 @@ public class HomeActivity extends BaseActivity {
     public String getToken() {
         return sharedPreferenceManager.getString(AppConstants.KEY_TOKEN);
     }
+
 }

@@ -131,6 +131,7 @@ public class WebServiceConstants {
     public static final String Q_PARAM_UPCOMING_SESSION_REQUEST = "upcoming_session_request";
     public static final String Q_PARAM_EMAIL = "email";
     public static final String Q_PARAM_CATEGORIESID = "category_id";
+    public static final String Q_PARAM_IS_MINE = "is_mine";
     public static final String Q_PARAM_ROOT = "root";
     public static final String DAILY_MANTRA = "is_daily_mantra";
     public static final String ADMIN_MANTRA = "is_admin_mantra";

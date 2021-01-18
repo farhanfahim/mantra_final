@@ -6,19 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Include following permission if you want to cache images on SD card -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -49,6 +42,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3e20cd58531084d89edf0e73416cf3a58a4ab284" />
+
+
         <!-- Splash screen -->
         <activity
             android:name="com.tekrevol.mantra.activities.SplashActivity"
@@ -62,7 +60,6 @@
             </intent-filter>
 
         </activity>
-
 
         <!-- Main Activity -->
         <activity
@@ -86,32 +83,6 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="3e20cd58531084d89edf0e73416cf3a58a4ab284" />
-        <service android:name=".broadcast.ExampleService"/>
-<!--
-        <receiver
-            android:name=".broadcast.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true"/>-->
-<!--
-
-        <receiver android:name=".broadcast.AlarmReceiver" android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.REBOOT" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-            </intent-filter>
-        </receiver>
--->
-
-
-
-        <receiver android:name=".broadcast.AlarmReceiver" />
-        <receiver android:name=".broadcast.AlarmReceiver$ActionReceiver" />
         <activity
             android:name=".activities.AlarmActivity"
             android:label="@string/app_name"
@@ -122,6 +93,31 @@
                 <action android:name="android.intent.action.CALL" />
             </intent-filter>
         </activity>
+
+        <service android:name=".broadcast.ExampleService"/>
+
+        <receiver android:name=".broadcast.AlarmReceiver" />
+
+        <receiver android:name=".broadcast.AlarmReceiver$ActionReceiver" />
+
+        <!--<receiver android:name=".broadcast.BootCompleteReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>-->
+
+        <receiver android:name=".broadcast.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
 
     </application>
