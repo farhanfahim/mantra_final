@@ -575,15 +575,12 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         mediaReminder.setReminderText(txtremindertitle.getStringTrimmed());
         mediaReminder.setArrAlarms(arrDate);
 //                       ObjectBoxManager.INSTANCE.putGeneralDBModel(mediaReminder.getId(), mediaReminder.toString(), DBModelTypes.SCHEDULED_MANTRA);
-        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, mediaReminder.toString(), DBModelTypes.SCHEDULED_MANTRA);
+        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), mediaReminder.toString(), DBModelTypes.SCHEDULED_MANTRA);
 
 
         for (AlarmModel alarmModel : arrDate) {
             scheduleAlarm(id, alarmModel);
         }
-        reminderApi(mediaReminder.getId(),arrDate);
-
-
         dismissDialog();
         getBaseActivity().popStackTill(1);
     }
@@ -657,7 +654,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                         mediaModel.setReminderText(txtremindertitle.getStringTrimmed());
                         mediaModel.setArrAlarms(arrDate);
                         mediaModel.setFileLocalPath(fileName);
-                        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+                        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
 
                         for (AlarmModel alarmModel : arrDate) {
                             scheduleAlarm(id, alarmModel);
@@ -724,6 +721,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         Intent intent = new Intent(getBaseActivity(), AlarmReceiver.class);
         intent.putExtra(AppConstants.GENERAL_DB_ID, mediaId);
         intent.putExtra(AppConstants.ALARM_ID, alarmModel.getAlarmId());
+        intent.putExtra(AppConstants.CURRENT_USER_ID, sharedPreferenceManager.getCurrentUser().getId());
         alarmIntent = PendingIntent.getBroadcast(getContext(),
                 alarmModel.getAlarmId(), intent, FLAG_UPDATE_CURRENT);
 

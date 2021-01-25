@@ -81,6 +81,7 @@ public class AppConstants {
     public static final String GCM_DATA_OBJECT = "gcmDataObject";
     public static final String GENERAL_DB_ID = "general_db_id";
     public static final String ALARM_ID = "alarm_id";
+    public static final String CURRENT_USER_ID = "current_user_id";
 
 
     /*******************Preferences KEYS******************/

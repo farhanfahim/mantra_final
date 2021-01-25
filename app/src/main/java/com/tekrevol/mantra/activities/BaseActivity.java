@@ -105,16 +105,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void onSuccessfullLogin(UserModel userModel) {
 
-        if (userModel.getId() != sharedPreferenceManager.getInt(AppConstants.KEY_CURRENT_USER_ID)) {
-            for (MediaModel allScheduledMantraMediaModel : ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels()) {
-                for (AlarmModel alarm : allScheduledMantraMediaModel.getAlarms()) {
-                    // Dismiss Alarms
-                    dismissAlarm(alarm.getAlarmId(), this);
-                }
-            }
-
-            ObjectBoxManager.INSTANCE.removeAllDB();
-        }
 
         sharedPreferenceManager.putObject(AppConstants.KEY_CURRENT_USER_MODEL, userModel);
         sharedPreferenceManager.putValue(AppConstants.KEY_CURRENT_USER_ID, userModel.getId());

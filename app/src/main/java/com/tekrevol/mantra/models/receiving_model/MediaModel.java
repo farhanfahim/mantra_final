@@ -19,6 +19,9 @@ public class MediaModel {
     transient boolean isChoice1;
     transient boolean isMedia1;
     @Expose
+    @SerializedName("dbId")
+    private int dbId;
+    @Expose
     @SerializedName("title")
     private String reminderText = "";
     private String fileLocalPath = "";
@@ -102,6 +105,7 @@ public class MediaModel {
 
 
     public MediaModel(Parcel in) {
+        dbId = in.readInt();
         reminderText = in.readString();
         fileLocalPath = in.readString();
         iconImageUrl = in.readString();
@@ -244,6 +248,18 @@ public class MediaModel {
 
     public void setFileAbsoluteUrl(String fileAbsoluteUrl) {
         this.fileAbsoluteUrl = fileAbsoluteUrl;
+    }
+
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        dbId = dbId;
+    }
+
+    public ArrayList<AlarmModel> getArrAlarms() {
+        return arrAlarms;
     }
 
     public String getImageUrl() {

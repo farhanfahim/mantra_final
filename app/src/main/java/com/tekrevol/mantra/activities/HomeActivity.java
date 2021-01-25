@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.managers.retrofit.WebServices;
 import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
+import com.tekrevol.mantra.models.database.GeneralDBModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
 import com.tekrevol.mantra.utils.utility.Blur;
@@ -106,72 +108,26 @@ public class HomeActivity extends BaseActivity {
         if (!isMyServiceRunning(ExampleService.class)) {
             startService();
 
-            boolean isLogin = sharedPreferenceManager.getBoolean(AppConstants.IS_LOGIN);
-            if (isLogin){
-                sharedPreferenceManager.putValue(AppConstants.IS_LOGIN,false);
-                getReminders();
-            }else{
-                ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
-                if (!arrayList.isEmpty()) {
-                    arrMovieLines = arrayList;
-                    ObjectBoxManager.INSTANCE.removeAllDB();
-                    getScheduleMantra();
+            ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(this);
+            if (!arrayList.isEmpty()) {
+                arrMovieLines = arrayList;
+                List<Long> dbIdArray = ObjectBoxManager.INSTANCE.test (this);
+
+                for (Long id : dbIdArray){
+                    ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
                 }
+                getScheduleMantra();
+
+
+                //Log.d("mydata",genrealDb+"");
+
             }
 
         }
 
     }
 
-    private void getReminders(){
 
-        Map<String, Object> mquery = new HashMap<>();
-        mquery.put(WebServiceConstants.Q_PARAM_IS_MINE, 1);
-        webCall = getBaseWebServices(false).getAPIAnyObject(WebServiceConstants.PATH_REMINDERS, mquery, new WebServices.IRequestWebResponseAnyObjectCallBack() {
-            @Override
-            public void requestDataResponse(WebResponse<Object> webResponse) {
-                Type type = new TypeToken<ArrayList<ReminderModel>>() {
-                }.getType();
-                ArrayList<ReminderModel> arrayList = GsonFactory.getSimpleGson()
-                        .fromJson(GsonFactory.getSimpleGson().toJson(webResponse.result)
-                                , type);
-                MediaModel mediaModel = new MediaModel();
-                ArrayList<MediaModel> arrMedia = new ArrayList<>();
-
-                if (!arrayList.isEmpty()) {
-                    ObjectBoxManager.INSTANCE.removeAllDB();
-                    for (ReminderModel reminderModel : arrayList){
-                        mediaModel.setFileAbsoluteUrl(reminderModel.getReminderMediaModel().fileAbsoluteUrl);
-                        mediaModel.setReminderText(reminderModel.getReminderText());
-                        mediaModel.setDate (reminderModel.getDate());
-                        mediaModel.setId (reminderModel.getMediaId());
-                        mediaModel.setArrAlarms(reminderModel.getArrAlarms());
-                        mediaModel.setUser(reminderModel.getReminderMediaModel().user);
-                        mediaModel.setCategory(reminderModel.getReminderMediaModel().category);
-                        mediaModel.setCategoryId(reminderModel.getReminderMediaModel().categoryId);
-                        mediaModel.setCreatedAt(reminderModel.getReminderMediaModel().createdAt);
-                        mediaModel.setDescription(reminderModel.getReminderMediaModel().description);
-                        mediaModel.setFileMime(reminderModel.getReminderMediaModel().fileMime);
-                        mediaModel.setFilePath(reminderModel.getReminderMediaModel().filePath);
-                        mediaModel.setName(reminderModel.getReminderMediaModel().name);
-                        mediaModel.setMediaLength(reminderModel.getReminderMediaModel().mediaLength);
-                        //arrMedia.add(mediaModel);
-                        getSingleScheduleMantra(mediaModel);
-                    }
-
-                    //arrMovieLines = arrMedia;
-
-                    //getScheduleMantra();
-                }
-                //Toast.makeText(getApplicationContext(),arrMovieLines.size()+"",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(Object object) {
-
-            }
-        });
-    }
 
     private void scheduleAlarmAfterServiceRestart(long mediaId, AlarmModel alarmModel) {
         AlarmManager alarmMgr;
@@ -180,6 +136,7 @@ public class HomeActivity extends BaseActivity {
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra(AppConstants.GENERAL_DB_ID, mediaId);
         intent.putExtra(AppConstants.ALARM_ID, alarmModel.getAlarmId());
+        intent.putExtra(AppConstants.CURRENT_USER_ID, sharedPreferenceManager.getCurrentUser().getId());
         alarmIntent = PendingIntent.getBroadcast(getContext(),
                 alarmModel.getAlarmId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -206,7 +163,7 @@ public class HomeActivity extends BaseActivity {
 
 
         for (MediaModel arr : arrMovieLines) {
-            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, arr.toString(), DBModelTypes.SCHEDULED_MANTRA);
+            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), arr.toString(), DBModelTypes.SCHEDULED_MANTRA);
                 for (AlarmModel arrAlarm : arr.getAlarms()){
                     if (arrAlarm.getUnixDTTM() > currentTime){
                         scheduleAlarmAfterServiceRestart(id, arrAlarm);
@@ -217,23 +174,6 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private void getSingleScheduleMantra(MediaModel mediaModel) {
-
-        Calendar calendar = Calendar.getInstance();
-        //Returns current time in millis
-        long currentTime = calendar.getTimeInMillis();
-
-            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
-            for (AlarmModel arrAlarm : mediaModel.getAlarms()){
-                if (arrAlarm.getUnixDTTM() > currentTime){
-                    scheduleAlarmAfterServiceRestart(id, arrAlarm);
-                }else{
-                    ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
-                }
-            }
-
-
-    }
 
     public void startService() {
         Intent serviceIntent = new Intent(this, ExampleService.class);
@@ -412,18 +352,6 @@ public class HomeActivity extends BaseActivity {
 
         if (containerBottomBar != null)
             containerBottomBar.setVisibility(View.GONE);
-    }
-
-    public Gson getGson() {
-        return getGson();
-    }
-
-    public WebServices getBaseWebServices(boolean isShowLoader) {
-        return new WebServices(this, getToken(), BaseURLTypes.BASE_URL, isShowLoader);
-    }
-
-    public String getToken() {
-        return sharedPreferenceManager.getString(AppConstants.KEY_TOKEN);
     }
 
 }

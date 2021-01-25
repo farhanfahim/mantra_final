@@ -33,6 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     Context ctx;
     long generalDBID = -1;
     static int alarmId = -1;
+    static int userId = -1;
     NotificationManager notificationManager;
     public static MediaPlayer mMediaPlayer;
 
@@ -56,6 +57,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         generalDBID = intent.getLongExtra(AppConstants.GENERAL_DB_ID, -1);
         alarmId = intent.getIntExtra(AppConstants.ALARM_ID, -1);
+        userId = intent.getIntExtra(AppConstants.CURRENT_USER_ID, -1);
 
 
         Log.d("ALARM", "onReceive: " + "General DB ID: " + generalDBID);
@@ -81,7 +83,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             if (alarmModel != null) {
                 scheduledMantraMediaModel.getAlarms().remove(alarmModel);
-                objectBoxManager.putGeneralDBModel(generalDBID, scheduledMantraMediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+                int currentUserId = SharedPreferenceManager.getInstance(context).getCurrentUser().getId();
+                objectBoxManager.putGeneralDBModel(generalDBID, currentUserId,scheduledMantraMediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
 
             } else {
                 Intent serviceIntent = new Intent(ctx, ExampleService.class);
@@ -93,12 +96,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
+        if (userId == scheduledMantraMediaModel.getUser().getId()) {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-            showNotification(alarmId, scheduledMantraMediaModel);
-            playRingtone(scheduledMantraMediaModel, context);
-        } else {
-            openActivity(AlarmActivity.class, generalDBID);
+                showNotification(alarmId, scheduledMantraMediaModel);
+                playRingtone(scheduledMantraMediaModel, context);
+            } else {
+                openActivity(AlarmActivity.class, generalDBID);
+            }
         }
 
 

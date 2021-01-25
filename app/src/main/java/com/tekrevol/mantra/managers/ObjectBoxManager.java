@@ -1,6 +1,8 @@
 package com.tekrevol.mantra.managers;
 
 
+import android.content.Context;
+
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.models.database.GeneralDBModel;
@@ -47,8 +49,18 @@ public class ObjectBoxManager {
         return null;
     }
 
+    /*public List<GeneralDBModel> queryForSpecificMedia(int currentUserId) {
+        String userId = String.valueOf(currentUserId);
+        List<GeneralDBModel> generalDBModel = getGeneralDBBox().query()
+                .contains(GeneralDBModel_.currentUserId, userId)
+                .build()
+                .find();
+
+        return  generalDBModel;
+    }*/
+
     // Return all media models for Scheduled Mantra
-    public ArrayList<MediaModel> getAllScheduledMantraMediaModels() {
+    public ArrayList<MediaModel> getAllScheduledMantraMediaModels(Context context) {
         //List<GeneralDBModel> all = getGeneralDBBox().query().order(GeneralDBModel_.date, QueryBuilder.DESCENDING).build().find();
         List<GeneralDBModel> all = getGeneralDBBox().query().order(GeneralDBModel_.id,QueryBuilder.DESCENDING).build().find();
        // List<GeneralDBModel> all = getGeneralDBBox().getAll();
@@ -62,13 +74,43 @@ public class ObjectBoxManager {
             if (generalDBModel.getMedia().getAlarms().isEmpty()) {
                 mantrasToDelete.add(generalDBModel.getMedia());
             } else {
-                mediaModels.add(generalDBModel.getMedia());
+                int currentUserId = SharedPreferenceManager.getInstance(context).getCurrentUser().getId();
+                if (generalDBModel.currentUserId == currentUserId){
+                    mediaModels.add(generalDBModel.getMedia());
+                }
+
             }
         }
 
 
         for (MediaModel mediaModel : mantrasToDelete) {
             removeGeneralDBModel(mediaModel.getId());
+        }
+
+
+        return mediaModels;
+    }
+
+    public ArrayList<Long> test(Context context) {
+        //List<GeneralDBModel> all = getGeneralDBBox().query().order(GeneralDBModel_.date, QueryBuilder.DESCENDING).build().find();
+        List<GeneralDBModel> all = getGeneralDBBox().query().order(GeneralDBModel_.id,QueryBuilder.DESCENDING).build().find();
+        // List<GeneralDBModel> all = getGeneralDBBox().getAll();
+
+        ArrayList<MediaModel> mantrasToDelete = new ArrayList<>();
+        ArrayList<Long> mediaModels = new ArrayList<>();
+
+
+
+        for (GeneralDBModel generalDBModel : all) {
+            if (generalDBModel.getMedia().getAlarms().isEmpty()) {
+                mantrasToDelete.add(generalDBModel.getMedia());
+            } else {
+                int currentUserId = SharedPreferenceManager.getInstance(context).getCurrentUser().getId();
+                if (generalDBModel.currentUserId == currentUserId){
+                    mediaModels.add(generalDBModel.id);
+                }
+
+            }
         }
 
 
@@ -87,8 +129,8 @@ public class ObjectBoxManager {
     // ***************** PUT OPERATIONS *******************//
 
 
-    public long putGeneralDBModel(long id, String jsonString, DBModelTypes dbModelTypes) {
-        GeneralDBModel generalDBModel = new GeneralDBModel(id, jsonString, dbModelTypes);
+    public long putGeneralDBModel(long id,int currentUserId, String jsonString, DBModelTypes dbModelTypes) {
+        GeneralDBModel generalDBModel = new GeneralDBModel(id, currentUserId, jsonString, dbModelTypes);
         return getGeneralDBBox().put(generalDBModel);
     }
 

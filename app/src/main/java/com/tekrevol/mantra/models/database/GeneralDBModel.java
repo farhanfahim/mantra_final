@@ -16,6 +16,7 @@ public class GeneralDBModel {
     // Same id as child model
     @Id
     public long id;
+    public int currentUserId;
     public String jsonData;
     public int dbModelTypes;
     public Date createdAt;
@@ -30,8 +31,9 @@ public class GeneralDBModel {
      * @param id
      * @param jsonData
      */
-    public GeneralDBModel(long id, String jsonData, DBModelTypes dbModelTypes) {
+    public GeneralDBModel(long id,int currentUserId, String jsonData, DBModelTypes dbModelTypes) {
         this.id = id;
+        this.currentUserId = currentUserId;
         this.jsonData = jsonData;
         this.dbModelTypes = dbModelTypes.ordinal();
         this.createdAt = new Date();

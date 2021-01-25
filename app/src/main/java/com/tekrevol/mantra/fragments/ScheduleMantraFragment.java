@@ -169,7 +169,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
     private void getScheduleMantra() {
 
 
-        ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
+        ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrayListTest = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
 
         arrMovieLines.addAll(arrayList);
@@ -293,7 +293,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
                 int alarmId = mediaModel.getAlarms().get(childPosition).getAlarmId();
                 dismissAlarm(alarmId, getContext());
                 mediaModel.getAlarms().remove(childPosition);
-                ObjectBoxManager.INSTANCE.putGeneralDBModel(id, mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+                ObjectBoxManager.INSTANCE.putGeneralDBModel(id,sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
                 //arrMovieLines.remove((arrMovieLines.get(parentPosition).getAlarms().get(childPosition)));
                 Log.d("SizeAfter", String.valueOf(arrMovieLines.size()));
                 scheduleMantraAdapter.notifyDataSetChanged();

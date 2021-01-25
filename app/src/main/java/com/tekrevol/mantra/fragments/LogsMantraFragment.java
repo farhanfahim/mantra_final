@@ -125,7 +125,7 @@ public class LogsMantraFragment extends BaseFragment {
 
     private void getScheduleMantra() {
 
-        ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels();
+        ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrMovieLines.addAll(arrayList);
         logMantraAdapter.setData(arrMovieLines);
     }
