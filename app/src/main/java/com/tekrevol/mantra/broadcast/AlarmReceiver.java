@@ -96,7 +96,8 @@ public class AlarmReceiver extends BroadcastReceiver {
             e.printStackTrace();
         }
 
-        if (userId == scheduledMantraMediaModel.getUser().getId()) {
+        if (userId == SharedPreferenceManager.getInstance(context).getCurrentUser().getId()) {
+
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
 
                 showNotification(alarmId, scheduledMantraMediaModel);
@@ -105,6 +106,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 openActivity(AlarmActivity.class, generalDBID);
             }
         }
+
 
 
     }

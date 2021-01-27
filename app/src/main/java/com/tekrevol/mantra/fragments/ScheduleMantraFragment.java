@@ -47,6 +47,7 @@ import com.tekrevol.mantra.widget.TitleBar;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -168,11 +169,20 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
 
     private void getScheduleMantra() {
 
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
 
         ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrayListTest = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
 
-        arrMovieLines.addAll(arrayList);
+        for (MediaModel arr : arrayList){
+            for (AlarmModel arrAlarm : arr.getAlarms()) {
+                if (arrAlarm.getUnixDTTM() > currentTime) {
+                    arrMovieLines.add(arr);
+                }
+            }
+        }
         scheduleMantraAdapter.notifyDataSetChanged();
     }
 

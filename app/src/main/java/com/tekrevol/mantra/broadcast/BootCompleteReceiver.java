@@ -19,7 +19,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (action.equalsIgnoreCase(BOOT_ACTION)) {
             //check for boot complete event & start your service
-            startService();
+           // startService();
         }
 
     }
