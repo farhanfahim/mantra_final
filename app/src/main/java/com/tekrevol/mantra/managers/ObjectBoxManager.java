@@ -5,11 +5,13 @@ import android.content.Context;
 
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.enums.DBModelTypes;
+import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.database.GeneralDBModel;
 import com.tekrevol.mantra.models.database.GeneralDBModel_;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -76,6 +78,17 @@ public class ObjectBoxManager {
             } else {
                 int currentUserId = SharedPreferenceManager.getInstance(context).getCurrentUser().getId();
                 if (generalDBModel.currentUserId == currentUserId){
+                    Calendar calendar = Calendar.getInstance();
+                    //Returns current time in millis
+                    long currentTime = calendar.getTimeInMillis();
+
+                    ArrayList<AlarmModel> alarmModelArrayList = new ArrayList<>();
+                    for (AlarmModel arr : generalDBModel.getMedia().getAlarms()){
+                        if (arr.getUnixDTTM() > currentTime) {{
+                            alarmModelArrayList.add(arr);
+                            generalDBModel.getMedia().setArrAlarms(alarmModelArrayList);
+                        }}
+                    }
                     mediaModels.add(generalDBModel.getMedia());
                 }
 

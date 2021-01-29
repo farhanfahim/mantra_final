@@ -99,7 +99,7 @@ public class HomeActivity extends BaseActivity {
         if (!isMyServiceRunning()) {
             startService();
 
-            ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(this);
+         /*   ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(this);
             if (!arrayList.isEmpty()) {
                 arrMovieLines = arrayList;
                 List<Long> dbIdArray = ObjectBoxManager.INSTANCE.test (this);
@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity {
                 }
                 getScheduleMantra();
 
-            }
+            }*/
 
         }
 

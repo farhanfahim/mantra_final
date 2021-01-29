@@ -181,7 +181,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ctx, CHANNEL_ID)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(mediaModel.getName())
-                .setContentText(mediaModel.getDescription())
+                .setContentText(mediaModel.getReminderText())
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

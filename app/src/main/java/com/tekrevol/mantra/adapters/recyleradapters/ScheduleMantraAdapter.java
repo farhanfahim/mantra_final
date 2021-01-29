@@ -1,6 +1,9 @@
 package com.tekrevol.mantra.adapters.recyleradapters;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +16,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tekrevol.mantra.R;
+import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.callbacks.OnItemClickListener;
 import com.tekrevol.mantra.callbacks.OnSubItemClickListener;
 import com.tekrevol.mantra.managers.DateManager;
+import com.tekrevol.mantra.managers.ObjectBoxManager;
+import com.tekrevol.mantra.models.database.AlarmModel;
+import com.tekrevol.mantra.models.database.GeneralDBModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.widget.AnyTextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.tekrevol.mantra.BaseApplication.getContext;
 
 /**
  *
@@ -50,6 +60,12 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
         itemView = LayoutInflater.from(activity)
                 .inflate(R.layout.schedule_itemlist, parent, false);
         return new ViewHolder(itemView);
+    }
+
+    public void updateMediaList(List<MediaModel> newlist) {
+        arrData.clear();
+        arrData.addAll(newlist);
+        this.notifyDataSetChanged();
     }
 
     @Override
@@ -80,6 +96,13 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
         scheduleDateAdapter.setArrData(model.getAlarms());
         bindNestedRecyclerView(scheduleDateAdapter, holder);
         setListener(holder, model);
+
+        holder.imgbtnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteParent(model,i);
+            }
+        });
     }
 
     private void bindNestedRecyclerView(ScheduleDateAdapter scheduleDateAdapter, ViewHolder holder) {
@@ -100,6 +123,28 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
     @Override
     public int getItemCount() {
         return arrData.size();
+    }
+    private void deleteParent(MediaModel mediaModel, int position) {
+        for (AlarmModel alarm : mediaModel.getAlarms()) {
+            dismissAlarm(alarm.getAlarmId(), getContext());
+        }
+        ArrayList<GeneralDBModel> arrayListTest = (ArrayList<GeneralDBModel>) ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
+
+        long id = arrayListTest.get(arrayListTest.size() - 1 - position).id;
+        //long id = arrayListTest.get(position).id;
+//        ObjectBoxManager.INSTANCE.removeGeneralDBModel(mediaModel.getId());
+        ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
+        arrData.remove(position);
+        notifyDataSetChanged();
+
+
+    }
+
+    private void dismissAlarm(long alarmId, Context context) {
+        AlarmManager alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent newIntent = new Intent(context, AlarmReceiver.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int) alarmId, newIntent, 0);
+        alarmMgr.cancel(alarmIntent);
     }
 
 

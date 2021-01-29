@@ -176,13 +176,17 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrayListTest = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
 
-        for (MediaModel arr : arrayList){
-            for (AlarmModel arrAlarm : arr.getAlarms()) {
-                if (arrAlarm.getUnixDTTM() > currentTime) {
-                    arrMovieLines.add(arr);
-                }
+        int pos = 0;
+        for (MediaModel arrMedia : arrayList) {
+
+            if (arrMedia.getAlarms().size() == 0) {
+                deleteParent(arrMedia, pos);
             }
+            pos++;
         }
+
+        arrMovieLines.addAll(arrayList);
+
         scheduleMantraAdapter.notifyDataSetChanged();
     }
 
@@ -191,7 +195,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
     public void onItemClick(int position, Object object, View view, String adapterName) {
 
         switch (view.getId()) {
-            case R.id.imgbtn_delete:
+            /*case R.id.imgbtn_delete:
                 MediaModel mediaModel = (MediaModel) object;
                 UIHelper.showAlertDialog("Are you sure you want to delete?", "Delete", new DialogInterface.OnClickListener() {
                     @Override
@@ -200,7 +204,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
                     }
                 }, getContext());
                 break;
-            case R.id.playMedia:
+            */case R.id.playMedia:
                 if ((arrMovieLines.get(position).isMedia1())) {
                     arrMovieLines.get(position).setMedia1(false);
                     mediaPlayer.release();
@@ -259,7 +263,21 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         for (AlarmModel alarm : mediaModel.getAlarms()) {
             dismissAlarm(alarm.getAlarmId(), getContext());
         }
-        long id  = arrayListTest.get(arrayListTest.size()-1 - position ).id;
+        long id = arrayListTest.get(arrayListTest.size() - 1 - position).id;
+        //long id = arrayListTest.get(position).id;
+//        ObjectBoxManager.INSTANCE.removeGeneralDBModel(mediaModel.getId());
+
+        ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
+        arrMovieLines.remove(position);
+        //getBaseActivity().popBackStack();
+        scheduleMantraAdapter.notifyDataSetChanged();
+    }
+
+    private void deleteParent(MediaModel mediaModel, int position) {
+        for (AlarmModel alarm : mediaModel.getAlarms()) {
+            dismissAlarm(alarm.getAlarmId(), getContext());
+        }
+        long id = arrayListTest.get(arrayListTest.size() - 1 - position).id;
         //long id = arrayListTest.get(position).id;
 //        ObjectBoxManager.INSTANCE.removeGeneralDBModel(mediaModel.getId());
         ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
@@ -297,18 +315,20 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         UIHelper.showAlertDialog("Are you sure you want to delete schedule time?", "Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                long id  = arrayListTest.get(arrayListTest.size()-1 - parentPosition ).id;
+                long id = arrayListTest.get(arrayListTest.size() - 1 - parentPosition).id;
                 Log.d("SizeBefore", String.valueOf(arrMovieLines.size()));
                 MediaModel mediaModel = arrMovieLines.get(parentPosition);
                 int alarmId = mediaModel.getAlarms().get(childPosition).getAlarmId();
                 dismissAlarm(alarmId, getContext());
                 mediaModel.getAlarms().remove(childPosition);
-                ObjectBoxManager.INSTANCE.putGeneralDBModel(id,sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
+                ObjectBoxManager.INSTANCE.putGeneralDBModel(id, sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
                 //arrMovieLines.remove((arrMovieLines.get(parentPosition).getAlarms().get(childPosition)));
                 Log.d("SizeAfter", String.valueOf(arrMovieLines.size()));
                 scheduleMantraAdapter.notifyDataSetChanged();
+                if (arrMovieLines.get(parentPosition).getAlarms().size() == 0) {
 
-
+                    getBaseActivity().popBackStack();
+                }
             }
         }, getContext());
 
@@ -320,7 +340,6 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int) alarmId, newIntent, 0);
         alarmMgr.cancel(alarmIntent);
     }
-
 
 
 }
