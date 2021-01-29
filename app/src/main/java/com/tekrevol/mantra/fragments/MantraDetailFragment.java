@@ -48,6 +48,7 @@ import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.enums.FileType;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
+import com.tekrevol.mantra.helperclasses.RunTimePermissions;
 import com.tekrevol.mantra.helperclasses.ui.helper.UIHelper;
 import com.tekrevol.mantra.managers.DateManager;
 import com.tekrevol.mantra.managers.FileManager;
@@ -352,7 +353,10 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                 setReminder();
                 break;
             case R.id.save:
-                onSaveClicked();
+                if (RunTimePermissions.isAllPermissionGiven(getContext(), getBaseActivity(), true)) {
+                    onSaveClicked();
+                }
+
                 break;
             case R.id.imgspinner:
             case R.id.txtmantracategory:

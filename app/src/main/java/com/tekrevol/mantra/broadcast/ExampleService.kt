@@ -39,11 +39,11 @@ class ExampleService : Service() {
         //stopSelf();
 
         val arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(this)
-        if (!arrayList.isEmpty()) {
+        if (arrayList.size > 0) {
             arrMovieLines = arrayList
             val dbIdArray: List<Long> = ObjectBoxManager.INSTANCE.test(this)
             for (id in dbIdArray) {
-                ObjectBoxManager.INSTANCE.removeGeneralDBModel(id!!)
+                ObjectBoxManager.INSTANCE.removeGeneralDBModel(id)
             }
             getScheduleMantra()
         }
@@ -115,12 +115,23 @@ class ExampleService : Service() {
         for (arr in arrMovieLines!!) {
             val id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, SharedPreferenceManager.getInstance(this).getCurrentUser().getId(), arr.toString(), DBModelTypes.SCHEDULED_MANTRA)
             for (arrAlarm in arr.alarms) {
-                if (arrAlarm.unixDTTM > currentTime) {
+                val arrTime: Long = arrAlarm.unixDTTM
+                if (arrTime > currentTime) {
                     scheduleAlarmAfterServiceRestart(id, arrAlarm)
+                }else{
+                    dismissAlarm(AlarmReceiver.alarmId.toLong(), this)
                 }
             }
         }
     }
+
+    private fun dismissAlarm(alarmId: Long, context: Context) {
+        val alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
+        val newIntent = Intent(context, AlarmReceiver::class.java)
+        val alarmIntent = PendingIntent.getBroadcast(context, alarmId.toInt(), newIntent, 0)
+        alarmMgr.cancel(alarmIntent)
+    }
+
 
 
 }

@@ -4,8 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 
 import com.tekrevol.mantra.activities.BaseActivity;
@@ -45,6 +49,8 @@ public class RunTimePermissions {
                     PERMISSIONS,
                     REQUEST_CODE
             );
+        }else{
+
         }
     }
 
@@ -62,7 +68,12 @@ public class RunTimePermissions {
             UIHelper.showAlertDialog("This app needs to access your record and storage permission to make mantra", "Permissions", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    verifyStoragePermissions(activity);
+                    //verifyStoragePermissions(activity);
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                    intent.setData(uri);
+                    activity.startActivity(intent);
+
                 }
             }, context);
 
@@ -70,5 +81,6 @@ public class RunTimePermissions {
 
         return false;
     }
+
 
 }

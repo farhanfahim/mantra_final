@@ -176,16 +176,18 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrayListTest = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
 
-        int pos = 0;
+
         for (MediaModel arrMedia : arrayList) {
-
-            if (arrMedia.getAlarms().size() == 0) {
-                deleteParent(arrMedia, pos);
+            ArrayList<AlarmModel> arrayList1 = new ArrayList<>();
+            for (AlarmModel arrAlarm : arrMedia.getAlarms()){
+                if (arrAlarm.getUnixDTTM() >= currentTime) {
+                    arrayList1.add(arrAlarm);
+                    /*deleteParent(arrMedia, pos);*/
+                }
             }
-            pos++;
+            arrMedia.setArrAlarms(arrayList1);
+            arrMovieLines.add(arrMedia);
         }
-
-        arrMovieLines.addAll(arrayList);
 
         scheduleMantraAdapter.notifyDataSetChanged();
     }

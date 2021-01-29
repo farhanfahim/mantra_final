@@ -62,12 +62,6 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
         return new ViewHolder(itemView);
     }
 
-    public void updateMediaList(List<MediaModel> newlist) {
-        arrData.clear();
-        arrData.addAll(newlist);
-        this.notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, int i) {
         MediaModel model = arrData.get(i);
@@ -96,7 +90,6 @@ public class ScheduleMantraAdapter extends RecyclerView.Adapter<ScheduleMantraAd
         scheduleDateAdapter.setArrData(model.getAlarms());
         bindNestedRecyclerView(scheduleDateAdapter, holder);
         setListener(holder, model);
-
         holder.imgbtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

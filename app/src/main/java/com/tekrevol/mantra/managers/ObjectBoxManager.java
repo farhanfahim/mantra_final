@@ -84,10 +84,11 @@ public class ObjectBoxManager {
 
                     ArrayList<AlarmModel> alarmModelArrayList = new ArrayList<>();
                     for (AlarmModel arr : generalDBModel.getMedia().getAlarms()){
-                        if (arr.getUnixDTTM() > currentTime) {{
+                        long arrTime = arr.getUnixDTTM();
+                        if (arrTime >= currentTime) {
                             alarmModelArrayList.add(arr);
                             generalDBModel.getMedia().setArrAlarms(alarmModelArrayList);
-                        }}
+                        }
                     }
                     mediaModels.add(generalDBModel.getMedia());
                 }
