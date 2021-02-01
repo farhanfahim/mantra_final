@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.navigation.NavigationView;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.broadcast.AlarmReceiver;
-import com.tekrevol.mantra.broadcast.ExampleService;
+import com.tekrevol.mantra.broadcast.AlarmService;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.fragments.HomeFragment;
@@ -31,7 +31,6 @@ import com.tekrevol.mantra.fragments.RightSideMenuFragment;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.helperclasses.RunTimePermissions;
 import com.tekrevol.mantra.libraries.residemenu.ResideMenu;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
@@ -144,28 +143,10 @@ public class HomeActivity extends BaseActivity {
 
     }
 
-    private void getScheduleMantra() {
-
-        Calendar calendar = Calendar.getInstance();
-        //Returns current time in millis
-        long currentTime = calendar.getTimeInMillis();
-
-        Collections.reverse(arrMovieLines);
-        for (MediaModel arr : arrMovieLines) {
-            long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), arr.toString(), DBModelTypes.SCHEDULED_MANTRA);
-                for (AlarmModel arrAlarm : arr.getAlarms()){
-                    if (arrAlarm.getUnixDTTM() > currentTime){
-                        scheduleAlarmAfterServiceRestart(id, arrAlarm);
-                    }
-                }
-        }
-
-
-    }
 
 
     public void startService() {
-        Intent serviceIntent = new Intent(this, ExampleService.class);
+        Intent serviceIntent = new Intent(this, AlarmService.class);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             ContextCompat.startForegroundService(this, serviceIntent);
         } else {
@@ -176,7 +157,7 @@ public class HomeActivity extends BaseActivity {
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ExampleService.class.getName().equals(service.service.getClassName())) {
+            if (AlarmService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }

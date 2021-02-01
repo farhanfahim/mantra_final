@@ -1,9 +1,6 @@
 package com.tekrevol.mantra.adapters.recyleradapters;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +9,8 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tekrevol.mantra.R;
-import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.callbacks.OnSubItemClickListener;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.models.database.AlarmModel;
-import com.tekrevol.mantra.models.database.GeneralDBModel;
-import com.tekrevol.mantra.models.receiving_model.MediaModel;
-import com.tekrevol.mantra.models.receiving_model.SubCategories;
 import com.tekrevol.mantra.widget.AnyTextView;
 
 import java.util.ArrayList;
@@ -27,8 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.tekrevol.mantra.BaseApplication.getContext;
 
 /**
  *

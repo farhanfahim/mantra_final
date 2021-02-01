@@ -3,40 +3,62 @@ package com.tekrevol.mantra.models.receiving_model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tekrevol.mantra.managers.FileManager;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.models.database.AlarmModel;
+import com.tekrevol.mantra.models.room_database_models.ListConverter;
+import com.tekrevol.mantra.models.room_database_models.ObjectCategoryConverter;
+import com.tekrevol.mantra.models.room_database_models.ObjectUserModelConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class MediaModel {
+@Entity
+public class MediaModel implements Serializable {
 
 
     transient boolean isChoice1;
     transient boolean isMedia1;
-    @Expose
-    @SerializedName("dbId")
+
+    @PrimaryKey(autoGenerate = true)
     private int dbId;
+
+    private int currentUserId;
+
     @Expose
     @SerializedName("title")
-    private String reminderText = "";
-    private String fileLocalPath = "";
+    private String reminderText;
+
+    private String fileLocalPath;
     @Expose
     @SerializedName("alarms")
-    private ArrayList<AlarmModel> arrAlarms = new ArrayList<>();
+    @TypeConverters(ListConverter.class)
+    private List<AlarmModel> arrAlarm;
     private Date date;
+
     @Expose
     @SerializedName("icon_image_url")
     private String iconImageUrl;
+
+    @Ignore
     @Expose
     @SerializedName("category")
+    @TypeConverters(ObjectCategoryConverter.class)
     private Category category;
+
+    @Ignore
     @Expose
     @SerializedName("user")
+    @TypeConverters(ObjectUserModelConverter.class)
     private UserModel user;
     @Expose
     @SerializedName("original_playlist")
@@ -105,7 +127,6 @@ public class MediaModel {
 
 
     public MediaModel(Parcel in) {
-        dbId = in.readInt();
         reminderText = in.readString();
         fileLocalPath = in.readString();
         iconImageUrl = in.readString();
@@ -161,12 +182,12 @@ public class MediaModel {
         this.date = date;
     }
 
-    public ArrayList<AlarmModel> getAlarms() {
-        return arrAlarms;
+    public List<AlarmModel> getArrAlarm() {
+        return arrAlarm;
     }
 
-    public void setArrAlarms(ArrayList<AlarmModel> arrAlarms) {
-        this.arrAlarms = arrAlarms;
+    public void setArrAlarm(List<AlarmModel> arrAlarm) {
+        this.arrAlarm = arrAlarm;
     }
 
     public String getIconImageUrl() {
@@ -255,11 +276,7 @@ public class MediaModel {
     }
 
     public void setDbId(int dbId) {
-        dbId = dbId;
-    }
-
-    public ArrayList<AlarmModel> getArrAlarms() {
-        return arrAlarms;
+        this.dbId = dbId;
     }
 
     public String getImageUrl() {
@@ -398,6 +415,13 @@ public class MediaModel {
         this.id = id;
     }
 
+    public int getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setCurrentUserId(int currentUserId) {
+        this.currentUserId = currentUserId;
+    }
 
     @Override
     public String toString() {

@@ -1,11 +1,20 @@
 package com.tekrevol.mantra.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserDetails {
+import java.io.Serializable;
 
+@Entity
+public class UserDetails implements Serializable {
+
+
+    @PrimaryKey(autoGenerate = true)
+    private int dbId;
     @Expose
     @SerializedName("share_mantra_count")
     private int shareMantraCount;
@@ -291,6 +300,14 @@ public class UserDetails {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
     }
 
     @Override

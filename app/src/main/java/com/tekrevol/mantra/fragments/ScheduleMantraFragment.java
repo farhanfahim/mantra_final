@@ -5,8 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,20 +28,14 @@ import com.tekrevol.mantra.adapters.recyleradapters.ScheduleMantraAdapter;
 import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.callbacks.OnItemClickListener;
 import com.tekrevol.mantra.callbacks.OnSubItemClickListener;
-import com.tekrevol.mantra.constatnts.AppConstants;
-import com.tekrevol.mantra.constatnts.WebServiceConstants;
-import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.helperclasses.ui.helper.UIHelper;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
-import com.tekrevol.mantra.managers.retrofit.WebServices;
-import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.database.GeneralDBModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
-import com.tekrevol.mantra.models.receiving_model.UserModel;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
+import com.tekrevol.mantra.roomdatabase.DatabaseClient;
 import com.tekrevol.mantra.widget.TitleBar;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
@@ -117,7 +110,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         super.onCreate(savedInstanceState);
 
         arrMovieLines = new ArrayList<>();
-        scheduleMantraAdapter = new ScheduleMantraAdapter(getContext(), arrMovieLines, this, this);
+        //scheduleMantraAdapter = new ScheduleMantraAdapter(getContext(), arrMovieLines, this, this);
 
     }
 
@@ -134,7 +127,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bindRecyclerView();
+
         if (onCreated) {
             return;
         }
@@ -167,46 +160,33 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
 
     }
 
-    private void getScheduleMantra() {
-
-        Calendar calendar = Calendar.getInstance();
-        //Returns current time in millis
-        long currentTime = calendar.getTimeInMillis();
-
-        ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
-        arrayListTest = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModelsTest();
-
-
-        for (MediaModel arrMedia : arrayList) {
-            ArrayList<AlarmModel> arrayList1 = new ArrayList<>();
-            for (AlarmModel arrAlarm : arrMedia.getAlarms()){
-                if (arrAlarm.getUnixDTTM() >= currentTime) {
-                    arrayList1.add(arrAlarm);
-                    /*deleteParent(arrMedia, pos);*/
-                }
-            }
-            arrMedia.setArrAlarms(arrayList1);
-            arrMovieLines.add(arrMedia);
-        }
-
-        scheduleMantraAdapter.notifyDataSetChanged();
-    }
-
 
     @Override
     public void onItemClick(int position, Object object, View view, String adapterName) {
 
         switch (view.getId()) {
-            /*case R.id.imgbtn_delete:
+            case R.id.imgbtn_delete:
                 MediaModel mediaModel = (MediaModel) object;
                 UIHelper.showAlertDialog("Are you sure you want to delete?", "Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        delete(mediaModel, position);
+
+                        for (AlarmModel arr : mediaModel.getArrAlarm()) {
+                            dismissAlarm(arr.getAlarmId(), getBaseActivity());
+                        }
+
+                        deleteMantra(mediaModel);
+                        arrMovieLines.remove(position);
+                        scheduleMantraAdapter.notifyDataSetChanged();
+                        if (arrMovieLines.size() == 0) {
+                            getBaseActivity().popBackStack();
+                        }
                     }
                 }, getContext());
+
+
                 break;
-            */case R.id.playMedia:
+            case R.id.playMedia:
                 if ((arrMovieLines.get(position).isMedia1())) {
                     arrMovieLines.get(position).setMedia1(false);
                     mediaPlayer.release();
@@ -218,7 +198,7 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
                             //  selected = false;
                             mediaModel1.setMedia1(false);
                             arrMovieLines.get(position).setMedia1(false);
-                            scheduleMantraAdapter.notifyDataSetChanged();
+                            scheduleMantraAdapter.notifyItemChanged(position);
                         }
                     }
                     arrMovieLines.get(position).setMedia1(true);
@@ -261,33 +241,6 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
 
     }
 
-    private void delete(MediaModel mediaModel, int position) {
-        for (AlarmModel alarm : mediaModel.getAlarms()) {
-            dismissAlarm(alarm.getAlarmId(), getContext());
-        }
-        long id = arrayListTest.get(arrayListTest.size() - 1 - position).id;
-        //long id = arrayListTest.get(position).id;
-//        ObjectBoxManager.INSTANCE.removeGeneralDBModel(mediaModel.getId());
-
-        ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
-        arrMovieLines.remove(position);
-        //getBaseActivity().popBackStack();
-        scheduleMantraAdapter.notifyDataSetChanged();
-    }
-
-    private void deleteParent(MediaModel mediaModel, int position) {
-        for (AlarmModel alarm : mediaModel.getAlarms()) {
-            dismissAlarm(alarm.getAlarmId(), getContext());
-        }
-        long id = arrayListTest.get(arrayListTest.size() - 1 - position).id;
-        //long id = arrayListTest.get(position).id;
-//        ObjectBoxManager.INSTANCE.removeGeneralDBModel(mediaModel.getId());
-        ObjectBoxManager.INSTANCE.removeGeneralDBModel(id);
-        arrMovieLines.remove(position);
-        getBaseActivity().popBackStack();
-        scheduleMantraAdapter.notifyDataSetChanged();
-    }
-
 
     @Override
     public void onDestroyView() {
@@ -317,20 +270,32 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         UIHelper.showAlertDialog("Are you sure you want to delete schedule time?", "Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                long id = arrayListTest.get(arrayListTest.size() - 1 - parentPosition).id;
-                Log.d("SizeBefore", String.valueOf(arrMovieLines.size()));
-                MediaModel mediaModel = arrMovieLines.get(parentPosition);
-                int alarmId = mediaModel.getAlarms().get(childPosition).getAlarmId();
-                dismissAlarm(alarmId, getContext());
-                mediaModel.getAlarms().remove(childPosition);
-                ObjectBoxManager.INSTANCE.putGeneralDBModel(id, sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
-                //arrMovieLines.remove((arrMovieLines.get(parentPosition).getAlarms().get(childPosition)));
-                Log.d("SizeAfter", String.valueOf(arrMovieLines.size()));
-                scheduleMantraAdapter.notifyDataSetChanged();
-                if (arrMovieLines.get(parentPosition).getAlarms().size() == 0) {
 
+                MediaModel mediaModel = arrMovieLines.get(parentPosition);
+                ArrayList<AlarmModel> arrAlarm = (ArrayList<AlarmModel>) arrMovieLines.get(parentPosition).getArrAlarm();
+                ArrayList<AlarmModel> updatedArrAlarm = new ArrayList<>();
+
+                for (AlarmModel arr : arrAlarm) {
+                    if (arr.getAlarmId() != mediaModel.getArrAlarm().get(childPosition).getAlarmId()) {
+                        updatedArrAlarm.add(arr);
+                    }else{
+                        dismissAlarm(arr.getAlarmId(), getBaseActivity());
+                    }
+                }
+
+                mediaModel.setArrAlarm(updatedArrAlarm);
+                updateMedia(mediaModel);
+
+                scheduleMantraAdapter.notifyItemChanged(childPosition);
+                if (mediaModel.getArrAlarm().size() == 0) {
+                    deleteMantra(mediaModel);
+                    arrMovieLines.remove(parentPosition);
+                    scheduleMantraAdapter.notifyDataSetChanged();
+                }
+                if (arrMovieLines.size() == 0) {
                     getBaseActivity().popBackStack();
                 }
+
             }
         }, getContext());
 
@@ -341,6 +306,114 @@ public class ScheduleMantraFragment extends BaseFragment implements OnItemClickL
         Intent newIntent = new Intent(context, AlarmReceiver.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(context, (int) alarmId, newIntent, 0);
         alarmMgr.cancel(alarmIntent);
+    }
+
+
+    private void deleteMantra(final MediaModel media) {
+        class DeleteMedia extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                        .mediaDao()
+                        .deleteMedia(media);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                Log.d("deletedMedia", media.toString());
+                Log.d("deletedMedia", media.toString());
+                arrMovieLines.remove(media);
+                scheduleMantraAdapter.notifyDataSetChanged();
+                Log.d("Room", "Data deleted successfully");
+            }
+        }
+
+        DeleteMedia deleteMedia = new DeleteMedia();
+        deleteMedia.execute();
+
+    }
+
+
+    private void updateMedia(final MediaModel mediaModel) {
+        class UpdateMedia extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                        .mediaDao()
+                        .updateMedia(mediaModel);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                scheduleMantraAdapter.notifyDataSetChanged();
+                Log.d("ROOM", "database updated successfully");
+            }
+        }
+
+        UpdateMedia updateMedia = new UpdateMedia();
+        updateMedia.execute();
+
+    }
+
+    private void getScheduleMantra() {
+
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
+
+
+        class GetAllMantra extends AsyncTask<Void, Void, List<MediaModel>> {
+
+            @Override
+            protected List<MediaModel> doInBackground(Void... voids) {
+                List<MediaModel> taskList = DatabaseClient
+                        .getInstance(getContext())
+                        .getAppDatabase()
+                        .mediaDao()
+                        .getCurrentUserMantra(sharedPreferenceManager.getCurrentUser().getId());
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<MediaModel> tasks) {
+                super.onPostExecute(tasks);
+
+                arrMovieLines = (ArrayList<MediaModel>) tasks;
+
+
+                for (MediaModel arrMedia : arrMovieLines) {
+                    ArrayList<AlarmModel> updatedArrAlarm = new ArrayList<>();
+                    for (AlarmModel arr : arrMedia.getArrAlarm()) {
+                        if (arr.getUnixDTTM() >= currentTime) {
+                            updatedArrAlarm.add(arr);
+                        } else {
+                            dismissAlarm(arr.getAlarmId(), getBaseActivity());
+                        }
+                    }
+                    arrMedia.setArrAlarm(updatedArrAlarm);
+                    updateMedia(arrMedia);
+                    if (arrMedia.getArrAlarm().size() == 0){
+                        deleteMantra(arrMedia);
+                    }
+                }
+
+                scheduleMantraAdapter = new ScheduleMantraAdapter(getContext(), arrMovieLines, ScheduleMantraFragment.this::onItemClick, ScheduleMantraFragment.this::onItemClick);
+                bindRecyclerView();
+                scheduleMantraAdapter.notifyDataSetChanged();
+
+                Log.d("ROOM", "database retrieved successfully");
+            }
+        }
+
+        GetAllMantra getAllMantra = new GetAllMantra();
+        getAllMantra.execute();
+
     }
 
 

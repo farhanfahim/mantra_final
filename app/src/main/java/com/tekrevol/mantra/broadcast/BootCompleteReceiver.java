@@ -20,7 +20,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
 
         // assumes WordService is a registered service
 //        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-        Intent i = new Intent(context, ExampleService.class);
+        Intent i = new Intent(context, AlarmService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(i);
         } else {

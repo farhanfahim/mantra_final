@@ -3,13 +3,19 @@ package com.tekrevol.mantra.models.receiving_model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 
 import java.io.Serializable;
-
+@Entity
 public class Category implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    private int dbid;
 
     @Expose
     @SerializedName("icon_image_url")
@@ -156,6 +162,15 @@ public class Category implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getDbid() {
+        return dbid;
+    }
+
+    public void setDbid(int dbid) {
+        this.dbid = dbid;
+    }
+
     @Override
     public String toString() {
         return GsonFactory.getSimpleGson().toJson(this);

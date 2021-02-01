@@ -12,19 +12,17 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.activities.MainActivity;
-import com.tekrevol.mantra.broadcast.ExampleService;
+import com.tekrevol.mantra.broadcast.AlarmService;
 import com.tekrevol.mantra.callbacks.OnNewPacketReceivedListener;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.constatnts.WebServiceConstants;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.fragments.abstracts.GenericContentFragment;
 import com.tekrevol.mantra.libraries.imageloader.ImageLoaderHelper;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.managers.retrofit.WebServices;
 import com.tekrevol.mantra.models.receiving_model.Slug;
@@ -166,10 +164,9 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
                 aboutAPI(AppConstants.KEY_PRIVACY);
                 break;
             case R.id.logout:
-                if (isMyServiceRunning(ExampleService.class)){
+                if (isMyServiceRunning(AlarmService.class)){
                     stopService();
                 }
-                //ObjectBoxManager.INSTANCE.removeAllDB();
                 sharedPreferenceManager.clearDB();
                 getBaseActivity().clearAllActivitiesExceptThis(MainActivity.class);
 
@@ -185,8 +182,8 @@ public class LeftSideMenuFragment extends BaseFragment implements OnNewPacketRec
 
     public void stopService() {
         AppConstants.IS_LOGOUT = true;
-        Intent serviceIntent = new Intent(getContext(), ExampleService.class);
-        getContext().stopService(serviceIntent);
+        Intent serviceIntent = new Intent(getContext(), AlarmService.class);
+        getBaseActivity().stopService(serviceIntent);
 
     }
     private boolean isMyServiceRunning(Class<?> serviceClass) {

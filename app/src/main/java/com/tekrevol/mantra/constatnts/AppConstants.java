@@ -80,7 +80,9 @@ public class AppConstants {
     public static final String IMAGE_PREVIEW_TITLE = "title";
     public static final String GCM_DATA_OBJECT = "gcmDataObject";
     public static final String GENERAL_DB_ID = "general_db_id";
+    public static final String DB_ID = "db_id";
     public static final String ALARM_ID = "alarm_id";
+    public static final String MEDIA_MODEL = "media_model";
     public static final String CURRENT_USER_ID = "current_user_id";
 
 

@@ -1,6 +1,8 @@
 package com.tekrevol.mantra.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.adapters.recyleradapters.LogMantraAdapter;
+import com.tekrevol.mantra.adapters.recyleradapters.ScheduleMantraAdapter;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
+import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
+import com.tekrevol.mantra.roomdatabase.DatabaseClient;
 import com.tekrevol.mantra.widget.TitleBar;
 import com.todkars.shimmer.ShimmerRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -92,7 +98,7 @@ public class LogsMantraFragment extends BaseFragment {
         if (onCreated) {
             return;
         }
-        getScheduleMantra();
+        //getScheduleMantra();
 
     }
 
@@ -123,12 +129,49 @@ public class LogsMantraFragment extends BaseFragment {
 
     }
 
-    private void getScheduleMantra() {
+   /* private void getScheduleMantra() {
 
         ArrayList<MediaModel> arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(getContext());
         arrMovieLines.addAll(arrayList);
         logMantraAdapter.setData(arrMovieLines);
+    }*/
+
+    private void getScheduleMantra() {
+
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
+
+
+        class GetAllMantra extends AsyncTask<Void, Void, List<MediaModel>> {
+
+            @Override
+            protected List<MediaModel> doInBackground(Void... voids) {
+                List<MediaModel> taskList = DatabaseClient
+                        .getInstance(getContext())
+                        .getAppDatabase()
+                        .mediaDao()
+                        .getCurrentUserMantra(sharedPreferenceManager.getCurrentUser().getId());
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<MediaModel> tasks) {
+                super.onPostExecute(tasks);
+
+                arrMovieLines = (ArrayList<MediaModel>) tasks;
+
+                logMantraAdapter.setData(arrMovieLines);
+
+                Log.d("ROOM", "database retrieved successfully");
+            }
+        }
+
+        GetAllMantra getAllMantra = new GetAllMantra();
+        getAllMantra.execute();
+
     }
+
 
 
     @Override

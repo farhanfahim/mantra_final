@@ -3,12 +3,11 @@ package com.tekrevol.mantra.fragments;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +33,17 @@ import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.downloader.Progress;
 import com.downloader.utils.Utils;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.kaopiz.kprogresshud.KProgressHUD;
-import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.adapters.recyleradapters.DateAdapter;
+import com.tekrevol.mantra.adapters.recyleradapters.ScheduleMantraAdapter;
 import com.tekrevol.mantra.broadcast.AlarmReceiver;
 import com.tekrevol.mantra.callbacks.OnCalendarUpdate;
 import com.tekrevol.mantra.callbacks.OnItemClickListener;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.constatnts.WebServiceConstants;
-import com.tekrevol.mantra.enums.DBModelTypes;
 import com.tekrevol.mantra.enums.FileType;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
@@ -52,12 +51,10 @@ import com.tekrevol.mantra.helperclasses.RunTimePermissions;
 import com.tekrevol.mantra.helperclasses.ui.helper.UIHelper;
 import com.tekrevol.mantra.managers.DateManager;
 import com.tekrevol.mantra.managers.FileManager;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.managers.retrofit.WebServices;
 import com.tekrevol.mantra.managers.retrofit.entities.MultiFileModel;
 import com.tekrevol.mantra.models.IntWrapper;
-import com.tekrevol.mantra.models.ReminderModel;
 import com.tekrevol.mantra.models.SpinnerModel;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.Categories;
@@ -65,6 +62,7 @@ import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.models.receiving_model.SubCategories;
 import com.tekrevol.mantra.models.sending_model.UploadMedia;
 import com.tekrevol.mantra.models.wrappers.WebResponse;
+import com.tekrevol.mantra.roomdatabase.DatabaseClient;
 import com.tekrevol.mantra.widget.AnyEditTextView;
 import com.tekrevol.mantra.widget.AnyTextView;
 import com.tekrevol.mantra.widget.TitleBar;
@@ -74,6 +72,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -133,7 +132,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     int secs;
     private ArrayList<SpinnerModel> spinnerModelArrayList = new ArrayList<>();
     private ArrayList<SubCategories> arrCategories = new ArrayList<>();
-    private ObjectBoxManager objectBoxManager;
+   //// private ObjectBoxManager objectBoxManager;
     private DateAdapter dateAdapter;
     private ArrayList<AlarmModel> arrDate;
     private FragmentName fragmentName;
@@ -193,7 +192,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        objectBoxManager = ObjectBoxManager.getInstance((BaseApplication) getActivity().getApplicationContext());
+        ////objectBoxManager = ObjectBoxManager.getInstance((BaseApplication) getActivity().getApplicationContext());
         PRDownloader.initialize(getHomeActivity().getApplicationContext());
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
                 .setDatabaseEnabled(true)
@@ -217,7 +216,6 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         bindData();
 
     }
@@ -351,6 +349,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         switch (view.getId()) {
             case R.id.addDate:
                 setReminder();
+
                 break;
             case R.id.save:
                 if (RunTimePermissions.isAllPermissionGiven(getContext(), getBaseActivity(), true)) {
@@ -367,17 +366,26 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     }
 
     private void setReminder() {
+        Calendar calendar = Calendar.getInstance();
+        //Returns current time in millis
+        long currentTime = calendar.getTimeInMillis();
         DateManager.showDateTimePicker(getContext(), null, new OnCalendarUpdate() {
             @Override
             public void onCalendarUpdate(Calendar calendar, String formattedString) {
 //                UIHelper.showToast(getContext(), formattedString);
-                AlarmModel alarmModel = new AlarmModel();
-                int alarmRandomId = random.nextInt(10000);
-                alarmModel.setAlarmId(alarmRandomId);
-                alarmModel.setDateTime(formattedString);
-                alarmModel.setUnixDTTM(calendar.getTimeInMillis());
-                arrDate.add(alarmModel);
-                dateAdapter.notifyDataSetChanged();
+
+                    AlarmModel alarmModel = new AlarmModel();
+                    int alarmRandomId = random.nextInt(10000);
+                    alarmModel.setAlarmId(alarmRandomId);
+                    alarmModel.setDateTime(formattedString);
+                    alarmModel.setUnixDTTM(calendar.getTimeInMillis());
+                    if (calendar.getTimeInMillis() > currentTime ){
+                    arrDate.add(alarmModel);
+                    }else{
+                        Toast.makeText(getContext(),"Invalid date or time",Toast.LENGTH_SHORT).show();
+                    }
+                    dateAdapter.notifyDataSetChanged();
+
             }
         }, true);
     }
@@ -567,24 +575,62 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
 
     private void alarmMedia() {
         String path = Utils.getPath(dirPath, fileName);
-                       /* for (AlarmModel alarmModel : arrDate) {
-                            int alarmRandomId = random.nextInt(10000);
-
-                            alarmModel.setAlarmId(alarmRandomId);
-                            Log.d(TAG, "ALARM: id" + alarmModel.getAlarmId());
-                        }*/
 
         mediaReminder.setFileAbsoluteUrl(path);
         mediaReminder.setDate(DateManager.getCurrentDate());
         mediaReminder.setReminderText(txtremindertitle.getStringTrimmed());
-        mediaReminder.setArrAlarms(arrDate);
-//                       ObjectBoxManager.INSTANCE.putGeneralDBModel(mediaReminder.getId(), mediaReminder.toString(), DBModelTypes.SCHEDULED_MANTRA);
-        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), mediaReminder.toString(), DBModelTypes.SCHEDULED_MANTRA);
+        mediaReminder.setArrAlarm(arrDate);
 
+        for (AlarmModel alarmModel : mediaReminder.getArrAlarm()) {
+            scheduleAlarm(mediaReminder, alarmModel);
 
-        for (AlarmModel alarmModel : arrDate) {
-            scheduleAlarm(id, alarmModel);
         }
+
+        class SaveTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                MediaModel media = new MediaModel();
+                media.setCurrentUserId(sharedPreferenceManager.getCurrentUser().getId());
+                media.setId(mediaReminder.getId());
+                media.setArrAlarm(mediaReminder.getArrAlarm());
+                media.setCategoryId(mediaReminder.getCategoryId());
+                media.setDate(mediaReminder.getDate());
+                media.setDescription(mediaReminder.getDescription());
+                media.setFileAbsoluteUrl(mediaReminder.getFileAbsoluteUrl());
+                media.setFileLocalPath(mediaReminder.getFileLocalPath());
+                media.setFileMime(mediaReminder.getFileMime());
+                media.setFilePath(mediaReminder.getFilePath());
+                media.setFileUrl(mediaReminder.getFileUrl());
+                media.setFileType(mediaReminder.getFileType());
+                media.setIconImageUrl(mediaReminder.getIconImageUrl());
+                media.setImage(mediaReminder.getImage());
+                media.setImageUrl(mediaReminder.getImageUrl());
+                media.setMediaLength(mediaReminder.getMediaLength());
+                media.setName(mediaReminder.getName());
+                media.setOriginalPlaylist(mediaReminder.getOriginalPlaylist());
+                media.setReminderText(mediaReminder.getReminderText());
+                media.setUserId(mediaReminder.getUserId());
+
+
+                //adding to database
+                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                        .mediaDao()
+                        .insert(media);
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+
+        SaveTask st = new SaveTask();
+        st.execute();
         dismissDialog();
         getBaseActivity().popStackTill(1);
     }
@@ -641,29 +687,46 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
             @Override
             public void requestDataResponse(WebResponse<Object> webResponse) {
 
-                MediaModel mediaModel = GsonFactory.getSimpleGson().fromJson(GsonFactory.getSimpleGson().toJson(webResponse.result), MediaModel.class);
+                MediaModel media  = GsonFactory.getSimpleGson().fromJson(GsonFactory.getSimpleGson().toJson(webResponse.result), MediaModel.class);
+
+                media.setCurrentUserId(sharedPreferenceManager.getCurrentUser().getId());
+                media.setArrAlarm(arrDate);
+                media.setDate(DateManager.getCurrentDate());
+                media.setFileLocalPath(fileName);
+                media.setReminderText(txtremindertitle.getStringTrimmed());
+
 
                 if (cbScheduledMantra.isChecked()) {
                     if (!arrDate.isEmpty()) {
 
-                        /*for (AlarmModel alarmModel : arrDate) {
-                            int alarmRandomId = random.nextInt(10000);
-
-                            alarmModel.setAlarmId(alarmRandomId);
-                            Log.d(TAG, "ALARM: id" + alarmModel.getAlarmId());
-                        }*/
-
-
-                        mediaModel.setDate(DateManager.getCurrentDate());
-                        mediaModel.setReminderText(txtremindertitle.getStringTrimmed());
-                        mediaModel.setArrAlarms(arrDate);
-                        mediaModel.setFileLocalPath(fileName);
-                        long id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0,sharedPreferenceManager.getCurrentUser().getId(), mediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
-
                         for (AlarmModel alarmModel : arrDate) {
-                            scheduleAlarm(id, alarmModel);
+                            scheduleAlarm(media, alarmModel);
                         }
 
+                        class SaveTask extends AsyncTask<Void, Void, Void> {
+
+                            @Override
+                            protected Void doInBackground(Void... voids) {
+
+
+                                //adding to database
+                                DatabaseClient.getInstance(getContext()).getAppDatabase()
+                                        .mediaDao()
+                                        .insert(media);
+
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+
+                            }
+                        }
+
+                        SaveTask st = new SaveTask();
+                        st.execute();
+                        dismissDialog();
 
                     } else {
 
@@ -718,12 +781,19 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     /**
      * A custom method set the schedule alarm via AlarmManager.
      */
-    private void scheduleAlarm(long mediaId, AlarmModel alarmModel) {
+    private void scheduleAlarm(MediaModel media, AlarmModel alarmModel) {
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<MediaModel>() {}.getType();
+        String json = gson.toJson(media, type);
+
         AlarmManager alarmMgr;
         PendingIntent alarmIntent;
         alarmMgr = (AlarmManager) getBaseActivity().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getBaseActivity(), AlarmReceiver.class);
-        intent.putExtra(AppConstants.GENERAL_DB_ID, mediaId);
+        intent.putExtra(AppConstants.MEDIA_MODEL, json);
+        intent.putExtra(AppConstants.GENERAL_DB_ID, media.getId());
+        intent.putExtra(AppConstants.DB_ID, media.getDbId());
         intent.putExtra(AppConstants.ALARM_ID, alarmModel.getAlarmId());
         intent.putExtra(AppConstants.CURRENT_USER_ID, sharedPreferenceManager.getCurrentUser().getId());
         alarmIntent = PendingIntent.getBroadcast(getContext(),
@@ -739,30 +809,6 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         } else {
             alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmModel.getUnixDTTM(), alarmIntent);
         }
-
-
-
     }
 
-    private void reminderApi(long mediaId,ArrayList<AlarmModel> arrAlarm){
-        ReminderModel reminderModel = new ReminderModel();
-        reminderModel.setMediaId(mediaId);
-        reminderModel.setArrAlarms(arrAlarm);
-        reminderModel.setUserId(getCurrentUser().getUserDetails().getUserId());
-        reminderModel.setReminderText(txtremindertitle.getStringTrimmed());
-        reminderModel.setDate(DateManager.getCurrentDate());
-
-        webCall = getBaseWebServices(true).postAPIAnyObject(WebServiceConstants.PATH_REMINDERS, reminderModel.toString(), new WebServices.IRequestWebResponseAnyObjectCallBack() {
-            @Override
-            public void requestDataResponse(WebResponse<Object> webResponse) {
-
-                Log.d("success",webResponse.result.toString());
-            }
-
-            @Override
-            public void onError(Object object) {
-
-            }
-        });
-    }
 }

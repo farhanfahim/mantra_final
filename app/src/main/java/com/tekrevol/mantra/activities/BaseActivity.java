@@ -4,12 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,11 +23,8 @@ import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.fragments.LeftSideMenuFragment;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
 import com.tekrevol.mantra.fragments.abstracts.GenericDialogFragment;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.managers.SharedPreferenceManager;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
-import com.tekrevol.mantra.models.database.AlarmModel;
-import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.models.receiving_model.UserModel;
 import com.tekrevol.mantra.widget.TitleBar;
 

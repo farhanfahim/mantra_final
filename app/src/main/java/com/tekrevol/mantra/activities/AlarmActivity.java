@@ -23,10 +23,7 @@ import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.fragments.AlarmSelectionFragment;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
-
-import java.io.IOException;
 
 public class AlarmActivity extends BaseActivity {
 
@@ -37,10 +34,9 @@ public class AlarmActivity extends BaseActivity {
     public final String LOG_TAG = MainActivity.class.getSimpleName();
     public final int RC_SETTINGS_SCREEN_PERM = 123;
     public final int RC_VIDEO_APP_PERM = 124;
+    MediaModel mediaModel;
     Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
     private MediaPlayer mMediaPlayer;
-    MediaModel scheduledMantraMediaModel;
-    long dbId;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -87,17 +83,10 @@ public class AlarmActivity extends BaseActivity {
         super.onPostCreate(savedInstanceState);
 //        RunTimePermissions.verifyStoragePermissions(this);
 
-        dbId = getIntent().getLongExtra(AppConstants.GENERAL_DB_ID, -1);
-        Log.d("ALARM INTENT", "onPostCreate: " + dbId);
+        Intent intent = getIntent();
+        mediaModel = (MediaModel) intent.getSerializableExtra(AppConstants.MEDIA_MODEL);
 
-
-        scheduledMantraMediaModel = ObjectBoxManager.getInstance((BaseApplication) getApplicationContext()).getScheduledMantraMediaModel(dbId);
-
-        if (scheduledMantraMediaModel == null) {
-            Log.d("ALARM", "onPostCreate: " + "null media, id is: " + dbId);
-        }
-
-        initFragments(scheduledMantraMediaModel);
+        initFragments(mediaModel);
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.getBackground().setColorFilter(0x80000000, PorterDuff.Mode.MULTIPLY);
@@ -213,7 +202,7 @@ public class AlarmActivity extends BaseActivity {
                         if (!isFinishing()) {
                             finish();
 //                    addDockableFragment(DetailFragment.newInstance(mediaModel), false);
-                            sendNotification((int) dbId,mediaModel);
+                            sendNotification((int) mediaModel.getId(),mediaModel);
                             openActivity(HomeActivity.class);
                         }
                     } catch (Exception e){

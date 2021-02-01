@@ -10,26 +10,32 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.activities.AlarmActivity;
 import com.tekrevol.mantra.activities.HomeActivity;
 import com.tekrevol.mantra.activities.MainActivity;
 import com.tekrevol.mantra.constatnts.AppConstants;
-import com.tekrevol.mantra.enums.DBModelTypes;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.managers.SharedPreferenceManager;
 import com.tekrevol.mantra.models.database.AlarmModel;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
+import com.tekrevol.mantra.roomdatabase.DatabaseClient;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private ObjectBoxManager objectBoxManager;
     Context ctx;
     long generalDBID = -1;
     static int alarmId = -1;
@@ -37,12 +43,25 @@ public class AlarmReceiver extends BroadcastReceiver {
     NotificationManager notificationManager;
     public static MediaPlayer mMediaPlayer;
 
+    MediaModel scheduledMantraMediaModel = null;
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("ALARM", "onReceive: " + "alarm detected");
 
+        Gson gson = new Gson();
+        String stringLocation = intent.getStringExtra(AppConstants.MEDIA_MODEL);
+        if(stringLocation != null) {
+            Type type = new TypeToken<MediaModel>() {
+            }.getType();
+            scheduledMantraMediaModel = gson.fromJson(stringLocation, type);
+            Log.d("ALARM", "onReceive: " + scheduledMantraMediaModel.toString());
+        }
+        else{
+            Log.d("ALARM", "onReceive: failed");
+        }
 
-        objectBoxManager = ObjectBoxManager.getInstance((BaseApplication) context.getApplicationContext());
         ctx = context;
 
         if (SharedPreferenceManager.getInstance(ctx).getCurrentUser() == null) {
@@ -62,9 +81,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Log.d("ALARM", "onReceive: " + "General DB ID: " + generalDBID);
         Log.d("ALARM", "onReceive: " + "Alarm DB ID: " + alarmId);
-
-        MediaModel scheduledMantraMediaModel = objectBoxManager.getScheduledMantraMediaModel(generalDBID);
-//        showNotification(alarmId, scheduledMantraMediaModel);
+        Log.d("ALARM", "onReceive: " + "CURRENT USER ID: " + userId);
 
         dismissAlarm(alarmId, ctx);
         Log.d("ALARM", "onReceive: " + "alarm succes");
@@ -72,22 +89,16 @@ public class AlarmReceiver extends BroadcastReceiver {
         try {
             AlarmModel alarmModel = null;
 
-//            if (scheduledMantraMediaModel.getAlarms().size() == 1) {
-//                objectBoxManager.removeGeneralDBModel(generalDBID);
-//            } else {
-            for (AlarmModel alarm : scheduledMantraMediaModel.getAlarms()) {
+            for (AlarmModel alarm : scheduledMantraMediaModel.getArrAlarm()) {
                 if (alarm.getAlarmId() == alarmId) {
                     alarmModel = alarm;
                 }
             }
 
             if (alarmModel != null) {
-                scheduledMantraMediaModel.getAlarms().remove(alarmModel);
-                int currentUserId = SharedPreferenceManager.getInstance(context).getCurrentUser().getId();
-                objectBoxManager.putGeneralDBModel(generalDBID, currentUserId,scheduledMantraMediaModel.toString(), DBModelTypes.SCHEDULED_MANTRA);
-
+                scheduledMantraMediaModel.getArrAlarm().remove(alarmModel);
             } else {
-                Intent serviceIntent = new Intent(ctx, ExampleService.class);
+                Intent serviceIntent = new Intent(ctx, AlarmService.class);
                 ctx.stopService(serviceIntent);
             }
 //            }
@@ -276,5 +287,3 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
 }
-
-

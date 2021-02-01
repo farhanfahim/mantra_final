@@ -1,11 +1,18 @@
 package com.tekrevol.mantra.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+
 /**
  * Created by hamza.ahmed on 3/16/2018.
  */
+@Entity
+public class SpinnerModel implements Serializable {
 
-public class SpinnerModel {
-
+    @PrimaryKey(autoGenerate = true)
+    private int dbId;
 
     private String text;
     private boolean isSelected = false;
@@ -40,6 +47,13 @@ public class SpinnerModel {
         isSelected = selected;
     }
 
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
+    }
 
     @Override
     public String toString() {

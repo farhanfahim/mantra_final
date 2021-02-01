@@ -29,8 +29,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
-import com.tekrevol.mantra.models.database.MyObjectBox;
 
 import io.fabric.sdk.android.Fabric;
 import io.objectbox.BoxStore;
@@ -48,8 +46,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
     private static String applicationName;
     private static Context mContext;
     public static final String CHANNEL_ID = "exampleServiceChannel";
-    private BoxStore boxStore;
-
 
 
     @Override
@@ -59,35 +55,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         configImageLoader(this);
         mContext = this;
         applicationName = getApplicationName(this);
-
-
-        // TODO: 12/20/2017 Enable it to use Calligraphy font library
-//        configureCalligraphyLibrary();
-
-        // TODO: 11/1/2017 Enable Crash Lytics and Never Crash feature before releasing the app
-//        Fabric.with(this, new Crashlytics());
-//        neverCrash();
-
-
-        boxStore = MyObjectBox.builder().androidContext(BaseApplication.this).build();
-
-
-//        boxStore.pat
-//        Log.i("database file" , MyObjectBox.builder().get);
-        /*if (BuildConfig.DEBUG) {
-
-
-           // new AndroidObjectBrowser(boxStore).start(this);
-        }*/
-
-        ObjectBoxManager.getInstance(BaseApplication.this);
-        if (BuildConfig.DEBUG) {
-            new AndroidObjectBrowser(boxStore).start(this);
-        }
-
-        Log.d("App", "Using ObjectBox " + BoxStore.getVersion() + " (" + BoxStore.getVersionNative() + ")");
-
-
 
     }
 
@@ -215,9 +182,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
         }
     }
 
-    public BoxStore getBoxStore() {
-        return boxStore;
-    }
 
     public static String getApplicationName() {
         return applicationName;

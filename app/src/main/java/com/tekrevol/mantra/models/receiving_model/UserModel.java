@@ -1,14 +1,28 @@
 package com.tekrevol.mantra.models.receiving_model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 import com.tekrevol.mantra.models.SpinnerModel;
 import com.tekrevol.mantra.models.UserDetails;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.tekrevol.mantra.models.room_database_models.ListConverter;
+import com.tekrevol.mantra.models.room_database_models.ListSpinnerModelConverter;
+import com.tekrevol.mantra.models.room_database_models.ListUserModelConverter;
+import com.tekrevol.mantra.models.room_database_models.ObjectCategoryConverter;
+import com.tekrevol.mantra.models.room_database_models.ObjectUserDetailConverter;
 
+import java.io.Serializable;
 import java.util.List;
+@Entity
+public class UserModel implements Serializable {
 
-public class UserModel {
+
+    @PrimaryKey(autoGenerate = true)
+    private int dbId;
 
     @Expose
     @SerializedName("expires_in")
@@ -21,12 +35,17 @@ public class UserModel {
     private String accessToken;
     @Expose
     @SerializedName("specialization")
+
+    @TypeConverters(ListSpinnerModelConverter.class)
     private List<SpinnerModel> specializations;
     @Expose
     @SerializedName("dependants")
+    @TypeConverters(ListUserModelConverter.class)
     private List<UserModel> dependants;
     @Expose
     @SerializedName("details")
+
+    @TypeConverters(ObjectUserDetailConverter.class)
     private UserDetails userDetails;
     @Expose
     @SerializedName("email")
@@ -57,11 +76,20 @@ public class UserModel {
         isSelected = selected;
     }
 
-    public int getRoles_csv() {
+   /* public int getRoles_csv() {
         if (roles_csv == null || roles_csv.isEmpty()) {
             return 0;
         }
         return Integer.valueOf(roles_csv);
+    }
+
+    public void setRoles_csv(String roles_csv) {
+        this.roles_csv = roles_csv;
+    }
+*/
+
+    public String getRoles_csv() {
+        return roles_csv;
     }
 
     public void setRoles_csv(String roles_csv) {
@@ -160,4 +188,14 @@ public class UserModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
+    }
+
+
 }

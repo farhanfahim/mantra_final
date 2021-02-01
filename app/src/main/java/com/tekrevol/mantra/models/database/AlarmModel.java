@@ -3,14 +3,19 @@ package com.tekrevol.mantra.models.database;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.tekrevol.mantra.managers.retrofit.GsonFactory;
 
 import java.io.Serializable;
 
+@Entity
 public class AlarmModel implements Serializable {
 
+    @PrimaryKey
     @Expose
     @SerializedName("alarm_id")
     private int alarmId;

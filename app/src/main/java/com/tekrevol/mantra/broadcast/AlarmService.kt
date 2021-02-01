@@ -3,27 +3,27 @@ package com.tekrevol.mantra.broadcast
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tekrevol.mantra.BaseApplication
 import com.tekrevol.mantra.R
 import com.tekrevol.mantra.activities.MainActivity
 import com.tekrevol.mantra.constatnts.AppConstants
-import com.tekrevol.mantra.enums.DBModelTypes
-import com.tekrevol.mantra.managers.ObjectBoxManager
 import com.tekrevol.mantra.managers.SharedPreferenceManager
 import com.tekrevol.mantra.models.database.AlarmModel
 import com.tekrevol.mantra.models.receiving_model.MediaModel
+import com.tekrevol.mantra.roomdatabase.DatabaseClient
 import java.util.*
 
-class ExampleService : Service() {
+class AlarmService : Service() {
 
     private var arrMovieLines: ArrayList<MediaModel>? = null
-    override fun onCreate() {
-        super.onCreate()
-    }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         createNotificationChannel()
@@ -38,15 +38,8 @@ class ExampleService : Service() {
         //do heavy work on a background thread
         //stopSelf();
 
-        val arrayList = ObjectBoxManager.INSTANCE.getAllScheduledMantraMediaModels(this)
-        if (arrayList.size > 0) {
-            arrMovieLines = arrayList
-            val dbIdArray: List<Long> = ObjectBoxManager.INSTANCE.test(this)
-            for (id in dbIdArray) {
-                ObjectBoxManager.INSTANCE.removeGeneralDBModel(id)
-            }
-            getScheduleMantra()
-        }
+        getScheduleMantra()
+
         return START_STICKY
     }
 
@@ -65,12 +58,12 @@ class ExampleService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         if (AppConstants.IS_LOGOUT) {
-            val serviceIntent = Intent(this, ExampleService::class.java)
+            val serviceIntent = Intent(this, AlarmService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 stopService(serviceIntent)
             }
         } else {
-            val serviceIntent = Intent(this, ExampleService::class.java)
+            val serviceIntent = Intent(this, AlarmService::class.java)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 ContextCompat.startForegroundService(this, serviceIntent)
             } else {
@@ -84,14 +77,18 @@ class ExampleService : Service() {
     }
 
 
-    private fun scheduleAlarmAfterServiceRestart(mediaId: Long, alarmModel: AlarmModel) {
-        val alarmMgr: AlarmManager
+    private fun scheduleAlarmAfterServiceRestart(media: MediaModel, alarmModel: AlarmModel) {
+        val gson = Gson()
+        val type = object : TypeToken<MediaModel?>() {}.type
+        val json = gson.toJson(media, type)
         val alarmIntent: PendingIntent
-        alarmMgr = BaseApplication.getContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmMgr: AlarmManager = BaseApplication.getContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java)
-        intent.putExtra(AppConstants.GENERAL_DB_ID, mediaId)
+        intent.putExtra(AppConstants.MEDIA_MODEL, json)
+        intent.putExtra(AppConstants.GENERAL_DB_ID, media.id)
+        intent.putExtra(AppConstants.DB_ID, media.dbId)
         intent.putExtra(AppConstants.ALARM_ID, alarmModel.alarmId)
-        intent.putExtra(AppConstants.CURRENT_USER_ID, SharedPreferenceManager.getInstance(this).getCurrentUser().getId())
+        intent.putExtra(AppConstants.CURRENT_USER_ID, SharedPreferenceManager.getInstance(this).currentUser.id)
         alarmIntent = PendingIntent.getBroadcast(BaseApplication.getContext(),
                 alarmModel.alarmId, intent, PendingIntent.FLAG_CANCEL_CURRENT)
         alarmMgr.cancel(alarmIntent)
@@ -107,24 +104,6 @@ class ExampleService : Service() {
         }
     }
 
-    private fun getScheduleMantra() {
-        val calendar = Calendar.getInstance()
-        //Returns current time in millis
-        val currentTime = calendar.timeInMillis
-        Collections.reverse(arrMovieLines)
-        for (arr in arrMovieLines!!) {
-            val id = ObjectBoxManager.INSTANCE.putGeneralDBModel(0, SharedPreferenceManager.getInstance(this).getCurrentUser().getId(), arr.toString(), DBModelTypes.SCHEDULED_MANTRA)
-            for (arrAlarm in arr.alarms) {
-                val arrTime: Long = arrAlarm.unixDTTM
-                if (arrTime > currentTime) {
-                    scheduleAlarmAfterServiceRestart(id, arrAlarm)
-                }else{
-                    dismissAlarm(AlarmReceiver.alarmId.toLong(), this)
-                }
-            }
-        }
-    }
-
     private fun dismissAlarm(alarmId: Long, context: Context) {
         val alarmMgr = context.getSystemService(ALARM_SERVICE) as AlarmManager
         val newIntent = Intent(context, AlarmReceiver::class.java)
@@ -132,6 +111,70 @@ class ExampleService : Service() {
         alarmMgr.cancel(alarmIntent)
     }
 
+    private fun getScheduleMantra() {
+        val calendar = Calendar.getInstance()
+        //Returns current time in millis
+        val currentTime = calendar.timeInMillis
+
+        class GetAllMantra : AsyncTask<Void?, Void?, List<MediaModel>>() {
+
+            override fun onPostExecute(tasks: List<MediaModel>) {
+                super.onPostExecute(tasks)
+                arrMovieLines = tasks as ArrayList<MediaModel>
+                arrMovieLines!!.reverse()
+                for (arrMedia in arrMovieLines!!) {
+                    val updatedArrAlarm = ArrayList<AlarmModel>()
+                    for (arr in arrMedia.arrAlarm) {
+                        if (arr.unixDTTM >= currentTime) {
+                            updatedArrAlarm.add(arr)
+                            scheduleAlarmAfterServiceRestart(arrMedia, arr)
+                        } else {
+                            dismissAlarm(arr.alarmId.toLong(), this@AlarmService)
+                        }
+                    }
+                    arrMedia.arrAlarm = updatedArrAlarm
+                    updateMedia(arrMedia)
+                    Log.d("ROOM", "database retrieved successfully")
+                    Log.d("ROOM", arrMedia.toString())
+                }
+
+
+            }
+
+            override fun doInBackground(vararg params: Void?): List<MediaModel> {
+                return DatabaseClient
+                        .getInstance(this@AlarmService)
+                        .appDatabase
+                        .mediaDao()
+                        .getCurrentUserMantra(SharedPreferenceManager.getInstance(this@AlarmService).currentUser.id)
+            }
+        }
+
+        val getAllMantra = GetAllMantra()
+        getAllMantra.execute()
+    }
+
+    private fun updateMedia(mediaModel: MediaModel) {
+        class UpdateMedia : AsyncTask<Void?, Void?, Void?>() {
+
+            override fun onPostExecute(aVoid: Void?) {
+                super.onPostExecute(aVoid)
+
+                Log.d("ROOM", "database updated successfully")
+                Log.d("ROOM", mediaModel.toString())
+            }
+
+            override fun doInBackground(vararg params: Void?): Void? {
+                DatabaseClient.getInstance(this@AlarmService).appDatabase
+                        .mediaDao()
+                        .updateMedia(mediaModel)
+                return null
+            }
+        }
+
+        val updateMedia = UpdateMedia()
+        updateMedia.execute()
+    }
 
 
 }

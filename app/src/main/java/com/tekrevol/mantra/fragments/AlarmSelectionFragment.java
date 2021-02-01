@@ -7,21 +7,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
-import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.activities.AlarmActivity;
 import com.tekrevol.mantra.activities.HomeActivity;
-import com.tekrevol.mantra.broadcast.ExampleService;
 import com.tekrevol.mantra.enums.FragmentName;
 import com.tekrevol.mantra.fragments.abstracts.BaseFragment;
-import com.tekrevol.mantra.managers.ObjectBoxManager;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
 import com.tekrevol.mantra.widget.AnyTextView;
 import com.tekrevol.mantra.widget.TitleBar;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;

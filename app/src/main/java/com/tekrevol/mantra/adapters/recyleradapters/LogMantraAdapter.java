@@ -49,7 +49,7 @@ public class LogMantraAdapter extends RecyclerView.Adapter<LogMantraAdapter.View
         //holder.txtCategory.setText(model.getCategoryId());
         holder.txtDate1.setText(model.getDate().toString());
         //holder.txtAlarmId.setText(model.getAlarms().get(i).getAlarmId());
-        holder.txtDate2.setText(model.getAlarms().get(i).getDateTime());
+        holder.txtDate2.setText(model.getArrAlarm().get(i).getDateTime());
     }
 
     @Override
