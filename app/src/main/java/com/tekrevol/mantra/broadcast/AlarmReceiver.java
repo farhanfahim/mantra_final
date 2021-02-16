@@ -213,7 +213,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public void openActivity(Class<?> tClass, long id) {
         Intent i = new Intent(ctx, tClass);
-        i.putExtra(AppConstants.GENERAL_DB_ID, id);
+        //i.putExtra(AppConstants.GENERAL_DB_ID, id);
+        Gson gson = new Gson();
+        Type type = new TypeToken<MediaModel>() {}.getType();
+        String json = gson.toJson(scheduledMantraMediaModel, type);
+
+        i.putExtra(AppConstants.MEDIA_MODEL, json);
         Log.d("ALARM INTENT", "openActivity: " + id);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

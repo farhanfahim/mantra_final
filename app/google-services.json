@@ -40,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "351653210381-pqtgsrec4jtbtslkf4obmg7no9qcpp8m.apps.googleusercontent.com",
+              "client_id": "351653210381-88prl3o067silbrjs0u6q8p979b3girl.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.tekrevol.Mantra"
+                "bundle_id": "com.fomark.mantra"
               }
             }
           ]

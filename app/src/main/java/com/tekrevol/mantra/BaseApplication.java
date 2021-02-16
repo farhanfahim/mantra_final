@@ -22,7 +22,6 @@ import android.util.Pair;
 import com.google.android.gms.ads.MobileAds;
 import com.tekrevol.mantra.activities.MainActivity;
 import com.tekrevol.mantra.libraries.imageloader.CustomImageDownaloder;
-import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,7 +29,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-import io.fabric.sdk.android.Fabric;
 import io.objectbox.BoxStore;
 import io.objectbox.android.AndroidObjectBrowser;
 import io.reactivex.subjects.PublishSubject;
@@ -51,7 +49,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         configImageLoader(this);
         mContext = this;
         applicationName = getApplicationName(this);
@@ -101,7 +98,6 @@ public class BaseApplication extends MultiDexApplication implements Application.
                     @Override
                     public void run() {
 //                        SharedPreferenceManager.getInstance().setForcedRestart(true);
-                        Crashlytics.logException(paramThrowable);
                     }
                 });
                 t.start();

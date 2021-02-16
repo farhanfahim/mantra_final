@@ -19,11 +19,15 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tekrevol.mantra.BaseApplication;
 import com.tekrevol.mantra.R;
 import com.tekrevol.mantra.constatnts.AppConstants;
 import com.tekrevol.mantra.fragments.AlarmSelectionFragment;
 import com.tekrevol.mantra.models.receiving_model.MediaModel;
+
+import java.lang.reflect.Type;
 
 public class AlarmActivity extends BaseActivity {
 
@@ -84,7 +88,18 @@ public class AlarmActivity extends BaseActivity {
 //        RunTimePermissions.verifyStoragePermissions(this);
 
         Intent intent = getIntent();
-        mediaModel = (MediaModel) intent.getSerializableExtra(AppConstants.MEDIA_MODEL);
+
+        Gson gson = new Gson();
+        String stringLocation = intent.getStringExtra(AppConstants.MEDIA_MODEL);
+        if(stringLocation != null) {
+            Type type = new TypeToken<MediaModel>() {
+            }.getType();
+            mediaModel = gson.fromJson(stringLocation, type);
+            Log.d("ALARM", "onReceive: " + mediaModel.toString());
+        }
+        else{
+            Log.d("ALARM", "onReceive: failed");
+        }
 
         initFragments(mediaModel);
 
