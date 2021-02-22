@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,6 +142,7 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     File recordedMantra;
     private KProgressHUD mDialog;
 
+    private Long locationClick = Long.valueOf(0);
 
     private Random random = new Random();
 
@@ -482,12 +484,18 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
     private void scheduleMedia() {
 
         if (txtremindertitle.getStringTrimmed().isEmpty()) {
+
+            locationClick = SystemClock.elapsedRealtime();
             UIHelper.showShortToastInCenter(getContext(), "Please write Reminder Title");
             return;
         }
 
         if (!arrDate.isEmpty()) {
 
+            if (SystemClock.elapsedRealtime() - locationClick < 2000) {
+                return;
+            }
+            locationClick = SystemClock.elapsedRealtime();
             downloadFile(mediaReminder);
 
         } else {
@@ -755,7 +763,6 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
         });
     }
 
-
     private int getIdFromSpinner() {
 
         for (SubCategories category : arrCategories) {
@@ -776,7 +783,6 @@ public class MantraDetailFragment extends BaseFragment implements OnItemClickLis
                 break;
         }
     }
-
 
     /**
      * A custom method set the schedule alarm via AlarmManager.
